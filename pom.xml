@@ -124,6 +124,27 @@
 					<scanIntervalSeconds>2</scanIntervalSeconds>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.plugin.version}</version>
+                <configuration>
+                    <webappDirectory>target/classes/VAADIN/widgetsets</webappDirectory>
+                    <modules>
+                        <module>org.vaadin.touchkit.gwt.ImageRuletteWidgetSet</module>
+                    </modules>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			
+			
 		</plugins>
 	</build>
 
