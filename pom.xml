@@ -66,6 +66,13 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
+		<dependency>
+		   <groupId>org.vaadin.leif</groupId>
+		   <artifactId>splashscreen</artifactId>
+		   <version>0.2</version>
+		</dependency>
+		<!--  
+		-->
 	</dependencies>
 
 	<build>
@@ -143,8 +150,6 @@
                     </execution>
                 </executions>
             </plugin>
-			
-			
 		</plugins>
 	</build>
 
@@ -155,7 +160,6 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-
 			<repositories>
 				<repository>
 					<id>vaadin-prereleases</id>
