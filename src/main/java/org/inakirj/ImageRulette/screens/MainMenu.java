@@ -47,12 +47,15 @@ public class MainMenu extends CssLayout {
         
 		Button newBtn = new Button("NEW");
         newBtn.addClickListener(this::onNewDiceClick);
+        newBtn.setWidth("100%");
         
         Button settingsBtn = new Button("SETTINGS");
         settingsBtn.addClickListener(this::onSettingsClick);
+        settingsBtn.setWidth("100%");
         
         Button aboutBtn = new Button("ABOUT");
         aboutBtn.addClickListener(this::onAboutClick);
+        aboutBtn.setWidth("100%");
         
         layout.addComponents(newBtn, settingsBtn, aboutBtn);
         addComponent(layout);

@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -29,7 +30,8 @@ public class DicePlay extends CssLayout {
 	private static final long serialVersionUID = 5317042828250752413L;
 	private Random randomizer = new Random(Calendar.getInstance().getTime().getTime());
 	private List<Object> lotteryList;
-	private Label randomValue;
+	private Image randomImgToBeReplaced;
+	private VerticalLayout layout;
 
 	/**
 	 * Instantiates a new dice play.
@@ -38,20 +40,19 @@ public class DicePlay extends CssLayout {
 		setLayout();
 	}
 
-	public void setupLottery(Object lotteryList) {
-		this.lotteryList = (List<Object>) lotteryList;
-		randomValue.setValue("");
+	public void setupLottery(List<Object> lotteryList) {
+		this.lotteryList = lotteryList;
 	}
 	
 	private void setLayout() {
-		VerticalLayout layout = new VerticalLayout();
+		layout = new VerticalLayout();
 		layout.setSizeFull();
 		
 		Label title = new Label("Dice Rulette");
 		title.setSizeFull();
 		
-		randomValue = new Label("");
-		randomValue.setSizeFull();
+		randomImgToBeReplaced = new Image("Pick");
+		randomImgToBeReplaced.setSizeFull();
 		
 		HorizontalLayout buttons = new HorizontalLayout();
         buttons.setSizeFull();
@@ -62,7 +63,13 @@ public class DicePlay extends CssLayout {
         goBtn.addClickListener(this::onPickABallClick);
         buttons.addComponent(goBtn);
 		
-		layout.addComponents(title, randomValue, buttons);
+        layout.addComponent(title);
+        layout.addComponent(randomImgToBeReplaced);
+        layout.addComponent(buttons);
+        
+        //Table stats = new Table();
+        // layout.addComponent(stats);
+        
 		addComponent(layout);
 	}
 	
@@ -73,8 +80,11 @@ public class DicePlay extends CssLayout {
 	
 	private void onPickABallClick(ClickEvent e) {
 		int value = randomizer.nextInt(lotteryList.size());
-		String valueSelected = (String)lotteryList.get(value);
-		randomValue.setValue("New Value -> " + valueSelected);
+		Image img = (Image)lotteryList.get(value);
+		img.setWidth(78, Unit.PIXELS);
+		img.setHeight(81, Unit.PIXELS);
+		layout.replaceComponent(randomImgToBeReplaced, img);
+		randomImgToBeReplaced = img;
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package org.inakirj.ImageRulette.engine;
 
+import java.util.List;
+
 import org.inakirj.ImageRulette.screens.DicePlay;
 import org.inakirj.ImageRulette.screens.DiceSetup;
 import org.inakirj.ImageRulette.screens.Gallery;
@@ -50,7 +52,9 @@ public class ViewController {
 			UI.getCurrent().setContent(settingsContent);
 			break;
 		case VIEW_DICE_PLAY:
-			dicePlayContent.setupLottery(item[0]);
+			if(item[0] instanceof List ){
+				dicePlayContent.setupLottery((List<Object>) item[0]);
+			}
 			UI.getCurrent().setContent(dicePlayContent);
 			break;
 		case VIEW_GALLERY:
