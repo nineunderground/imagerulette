@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 import org.inakirj.ImageRulette.MyUI;
 import org.inakirj.ImageRulette.engine.ViewController;
 
-import com.vaadin.data.HasValue.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Alignment;
@@ -144,13 +144,13 @@ public class DiceSetup extends CssLayout {
 	ComboBox cmb = new ComboBox();
 	List<String> cmbValues = IntStream.of(0, 1, 2, 3, 4, 5).mapToObj(i -> String.valueOf(i))
 		.collect(Collectors.toList());
-	cmb.setItems(cmbValues);
-	cmb.setEmptySelectionAllowed(false);
+	cmb.addItems(cmbValues);
+	cmb.setNullSelectionAllowed(false);
 	cmb.setTextInputAllowed(false);
 	cmb.setValue(cmbValues.get(0));
 	cmb.setWidth("70px");
 	cmb.setHeight(100, Unit.PERCENTAGE);
-	cmb.addValueChangeListener(this::checkValues);
+	cmb.addValueChangeListener(e -> checkValues(e));
 
 	HorizontalLayout iconItemLayout = new HorizontalLayout();
 	iconItemLayout.setSizeFull();
@@ -164,12 +164,6 @@ public class DiceSetup extends CssLayout {
 	return iconItemLayout;
     }
 
-    /**
-     * Check values.
-     *
-     * @param e
-     *            the e
-     */
     private void checkValues(ValueChangeEvent e) {
 	for (HorizontalLayout hl : iconItemLayoutList) {
 	    ComboBox cmb = (ComboBox) hl.getComponent(1);
