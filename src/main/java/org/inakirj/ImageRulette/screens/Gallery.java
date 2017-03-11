@@ -12,19 +12,19 @@ import com.vaadin.ui.CssLayout;
  */
 public class Gallery extends CssLayout {
 
-	/**
-	 * 
-	 */
-	public Gallery() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * 
+     */
+    public Gallery() {
+	// TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @param children
-	 */
-	public Gallery(Component... children) {
-		super(children);
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @param children
+     */
+    public Gallery(Component... children) {
+	super(children);
+	// TODO Auto-generated constructor stub
+    }
 
 }

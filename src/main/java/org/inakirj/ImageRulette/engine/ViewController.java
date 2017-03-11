@@ -18,73 +18,73 @@ import com.vaadin.ui.UI;
  *
  */
 public class ViewController {
-	
-	public static final int VIEW_MAIN_MENU = 1;
-	public static final int VIEW_SETUP_DICE = 11;
-	public static final int VIEW_SETTINGS = 12;
-	public static final int VIEW_DICE_PLAY = 111;
-	public static final int VIEW_GALLERY = 121;
-	private int currentView = VIEW_MAIN_MENU;
-	
-	private MainMenu mainMenuContent = new MainMenu();
-	private DiceSetup setupDiceContent = new DiceSetup();
-	private Settings settingsContent = new Settings();
-	private DicePlay dicePlayContent = new DicePlay();
-	private Gallery galleryContent = new Gallery();
 
-	/**
-	 * Main constructor
-	 */
-	public ViewController() {
-		
+    public static final int VIEW_MAIN_MENU = 1;
+    public static final int VIEW_SETUP_DICE = 11;
+    public static final int VIEW_SETTINGS = 12;
+    public static final int VIEW_DICE_PLAY = 111;
+    public static final int VIEW_GALLERY = 121;
+    private int currentView = VIEW_MAIN_MENU;
+
+    public MainMenu mainMenuContent = new MainMenu();
+    public DiceSetup setupDiceContent = new DiceSetup();
+    public Settings settingsContent = new Settings();
+    public DicePlay dicePlayContent = new DicePlay();
+    public Gallery galleryContent = new Gallery();
+
+    /**
+     * Main constructor
+     */
+    public ViewController() {
+
+    }
+
+    public void goTo(int viewToGo, Object... item) {
+	currentView = viewToGo;
+	switch (viewToGo) {
+	case VIEW_MAIN_MENU:
+	    UI.getCurrent().setContent(mainMenuContent);
+	    break;
+	case VIEW_SETUP_DICE:
+	    UI.getCurrent().setContent(setupDiceContent);
+	    break;
+	case VIEW_SETTINGS:
+	    UI.getCurrent().setContent(settingsContent);
+	    break;
+	case VIEW_DICE_PLAY:
+	    if (item[0] instanceof List) {
+		dicePlayContent.setupLottery((List<Object>) item[0]);
+	    }
+	    UI.getCurrent().setContent(dicePlayContent);
+	    break;
+	case VIEW_GALLERY:
+	    UI.getCurrent().setContent(galleryContent);
+	    break;
 	}
-	
-	public void goTo(int viewToGo, Object... item){
-		currentView = viewToGo;
-		switch (viewToGo){
-		case VIEW_MAIN_MENU:
-			UI.getCurrent().setContent(mainMenuContent);
-			break;
-		case VIEW_SETUP_DICE:
-			UI.getCurrent().setContent(setupDiceContent);
-			break;
-		case VIEW_SETTINGS:
-			UI.getCurrent().setContent(settingsContent);
-			break;
-		case VIEW_DICE_PLAY:
-			if(item[0] instanceof List ){
-				dicePlayContent.setupLottery((List<Object>) item[0]);
-			}
-			UI.getCurrent().setContent(dicePlayContent);
-			break;
-		case VIEW_GALLERY:
-			UI.getCurrent().setContent(galleryContent);
-			break;
-		}
-	}
-	
-	/**
-	 * @param layoutId
-	 * @param layout
-	 */
-//	public void setLayoutContent(int layoutId, CssLayout layout){
-//		switch (layoutId){
-//		case VIEW_MAIN_MENU:
-//			mainMenuContent.setLayout(layout);
-//			break;
-//		case VIEW_SETUP_DICE:
-//			setupDiceContent = layout;
-//			break;
-//		case VIEW_SETTINGS:
-//			settingsContent = layout;
-//			break;
-//		case VIEW_DICE_PLAY:
-//			dicePlayContent = layout;
-//			break;
-//		case VIEW_GALLERY:
-//			galleryContent = layout;
-//			break;
-//		}
-//	}
+    }
+
+    /**
+     * @param layoutId
+     * @param layout
+     */
+    // public void setLayoutContent(int layoutId, CssLayout layout){
+    // switch (layoutId){
+    // case VIEW_MAIN_MENU:
+    // mainMenuContent.setLayout(layout);
+    // break;
+    // case VIEW_SETUP_DICE:
+    // setupDiceContent = layout;
+    // break;
+    // case VIEW_SETTINGS:
+    // settingsContent = layout;
+    // break;
+    // case VIEW_DICE_PLAY:
+    // dicePlayContent = layout;
+    // break;
+    // case VIEW_GALLERY:
+    // galleryContent = layout;
+    // break;
+    // }
+    // }
 
 }

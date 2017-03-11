@@ -11,20 +11,19 @@ import com.vaadin.ui.CssLayout;
  *
  */
 public class Settings extends CssLayout {
+    /**
+     * 
+     */
+    public Settings() {
+	// TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * 
-	 */
-	public Settings() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param children
-	 */
-	public Settings(Component... children) {
-		super(children);
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @param children
+     */
+    public Settings(Component... children) {
+	super(children);
+	// TODO Auto-generated constructor stub
+    }
 
 }
