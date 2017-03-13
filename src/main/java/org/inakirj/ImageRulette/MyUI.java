@@ -2,7 +2,6 @@ package org.inakirj.ImageRulette;
 
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
@@ -10,6 +9,7 @@ import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
+import com.vaadin.addon.touchkit.settings.TouchKitSettings;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.TabBarView;
 import com.vaadin.addon.touchkit.ui.TabBarView.SelectedTabChangeEvent;
@@ -38,7 +38,7 @@ import com.vaadin.ui.UI;
 // @Theme("mytheme")
 @Theme("mymobiletheme")
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
-@Title("My Simple App")
+@Title("Dice Rulette")
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
@@ -50,9 +50,9 @@ public class MyUI extends UI {
 
 	// NavigationView tabContent1 = new NavigationView();
 	NavigationView tabContent2 = new NavigationView();
-	tabContent2.setToolbar(null);
+	tabContent2.setCaption("Setup the dice images");
 	NavigationView tabContent3 = new NavigationView();
-	tabContent3.setToolbar(null);
+	tabContent3.setCaption("Roll the dice");
 
 	// tabContent1.setContent(new DiceGalleryView());
 	// tabContent1.setData("1");
@@ -85,12 +85,6 @@ public class MyUI extends UI {
 	    }
 	});
 	setContent(tabManager);
-	// manager.addNavigationListener(listener);
-	// MyUI ui = (MyUI) UI.getCurrent();
-	// ui.getController().goTo(ViewController.VIEW_MAIN_MENU);
-	// setResponsive(true);
-	// setSizeFull();
-	// test();
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
@@ -98,12 +92,23 @@ public class MyUI extends UI {
     public static class MyUIServlet extends TouchKitServlet {
 	private static final long serialVersionUID = 1259803207649501173L;
 
+	// @Override
+	// public void init(ServletConfig servletConfig) throws ServletException
+	// {
+	// super.init(servletConfig);
+	// }
+
 	@Override
-	public void init(ServletConfig servletConfig) throws ServletException {
-	    super.init(servletConfig);
-	    //
-	    // Hook up with the framework's host page generation
-	    // SplashScreenHandler.init(getService());
+	protected void servletInitialized() throws ServletException {
+	    super.servletInitialized();
+	    TouchKitSettings s = getTouchKitSettings();
+	    String contextPath = getServletConfig().getServletContext().getContextPath();
+	    // App icon
+	    s.getApplicationIcons().addApplicationIcon(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
+	    // Splash screen
+	    s.getWebAppSettings().setStartupImage(contextPath + "VAADIN/themes/splash.png");
+	    // ViewPortSettings vp = s.getViewPortSettings();
+	    // vp.setViewPortUserScalable(true);
 	}
     }
 

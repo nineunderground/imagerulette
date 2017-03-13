@@ -18,6 +18,7 @@ import java.util.Random;
 
 import org.inakirj.ImageRulette.utils.ImageUtils;
 
+import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Alignment;
@@ -44,8 +45,8 @@ public class DicePlayView extends CssLayout {
     private Random randomizer = new Random(Calendar.getInstance().getTime().getTime());
     private List<Object> lotteryList;
     private Image randomImgToBeReplaced;
-    private VerticalLayout layout;
     private Map<Integer, Integer> statsImageIdOcurrencesMap = new HashMap<>();
+    private HorizontalLayout imageLayout;
 
     /**
      * Instantiates a new dice play.
@@ -68,38 +69,35 @@ public class DicePlayView extends CssLayout {
      * Sets the layout.
      */
     private void setLayout() {
-	layout = new VerticalLayout();
-	layout.setSizeFull();
-	Label title = new Label("Dice Rulette");
-	title.setSizeFull();
-
+	VerticalComponentGroup layout = new VerticalComponentGroup();
 	FileResource resource = new FileResource(
 		new File(VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/WEB-INF/image/nope.png"));
 	Image none = new Image("", resource);
-
 	randomImgToBeReplaced = none;
 	randomImgToBeReplaced.setWidth(78, Unit.PIXELS);
 	randomImgToBeReplaced.setHeight(81, Unit.PIXELS);
 
-	HorizontalLayout buttons = new HorizontalLayout();
-	buttons.setSizeFull();
-	Button goBtn = new Button("LOTTERY");
-	goBtn.addClickListener(this::onPickABallClick);
-	buttons.addComponent(goBtn);
+	imageLayout = new HorizontalLayout();
+	imageLayout.addComponent(randomImgToBeReplaced);
+	imageLayout.setWidth(100, Unit.PERCENTAGE);
+	imageLayout.setComponentAlignment(randomImgToBeReplaced, Alignment.TOP_CENTER);
 
-	Button stats = new Button("STATS");
-	stats.addClickListener(this::showStats);
+	Button rollBtn = new Button("ROLL");
+	rollBtn.addClickListener(this::onPickABallClick);
+	rollBtn.setWidth(100, Unit.PERCENTAGE);
+	rollBtn.setHeight(50, Unit.PIXELS);
+	rollBtn.addStyleName("btn-font-40");
+	// .v-touchkit-navbar font-size: 40px
+	// top margin 24 for .v-touchkit-componentgroup-cell>.v-button
 
-	layout.addComponent(title);
-	layout.addComponent(randomImgToBeReplaced);
-	layout.addComponent(buttons);
-	layout.addComponent(stats);
+	Button statsBtn = new Button("STATS");
+	statsBtn.addClickListener(this::showStats);
+	statsBtn.setWidth(100, Unit.PERCENTAGE);
+	statsBtn.setHeight(50, Unit.PIXELS);
 
-	layout.setExpandRatio(title, 1);
-	layout.setExpandRatio(randomImgToBeReplaced, 2);
-	layout.setExpandRatio(buttons, 1);
-	layout.setExpandRatio(stats, 6);
-
+	layout.addComponent(imageLayout);
+	layout.addComponent(rollBtn);
+	layout.addComponent(statsBtn);
 	addComponent(layout);
     }
 
@@ -169,18 +167,9 @@ public class DicePlayView extends CssLayout {
 	Image img = ImageUtils.getImage((Image) lotteryList.get(value));
 	img.setWidth(78, Unit.PIXELS);
 	img.setHeight(81, Unit.PIXELS);
-	layout.replaceComponent(randomImgToBeReplaced, img);
+	imageLayout.replaceComponent(randomImgToBeReplaced, img);
 	randomImgToBeReplaced = img;
-	refreshStats((int) img.getData());
-    }
-
-    /**
-     * Refresh stats.
-     *
-     * @param imgToIncrease
-     *            the img to increase
-     */
-    private void refreshStats(int imgIdToIncrease) {
+	int imgIdToIncrease = (int) img.getData();
 	Integer currentValue = statsImageIdOcurrencesMap.get(imgIdToIncrease);
 	currentValue++;
 	statsImageIdOcurrencesMap.put(imgIdToIncrease, new Integer(currentValue));
