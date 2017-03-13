@@ -10,15 +10,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.inakirj.ImageRulette.MyUI;
-import org.inakirj.ImageRulette.engine.ViewController;
 
 import com.vaadin.addon.touchkit.ui.NavigationView;
+import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -63,17 +61,22 @@ public class DiceSetupView extends CssLayout {
 	title.setValue("Select your dice configuration");
 	title.setSizeFull();
 
-	VerticalLayout imagesLayout = new VerticalLayout();
-	imagesLayout.setSizeFull();
-	IntStream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-		.forEach(i -> imagesLayout.addComponent(addDiceImage(i)));
+	VerticalComponentGroup imagesLayout = new VerticalComponentGroup();
+	imagesLayout.setWidth(100, Unit.PERCENTAGE);
 
-	HorizontalLayout buttons = new HorizontalLayout();
-	buttons.setSizeFull();
-	Button backBtn = new Button("BACK");
-	backBtn.addClickListener(this::onBackClick);
-	buttons.addComponent(backBtn);
-	layout.addComponents(title, imagesLayout, buttons);
+	// System.out.println("Width: " +
+	// UI.getCurrent().getPage().getBrowserWindowWidth());
+	// System.out.println("Height: " +
+	// UI.getCurrent().getPage().getBrowserWindowHeight());
+
+	IntStream.of(1, 3, 5, 7, 9, 11, 13, 15).forEach(i -> {
+	    HorizontalLayout hl = new HorizontalLayout();
+	    hl.addComponent(addDiceImage(i));
+	    hl.addComponent(addDiceImage(i + 1));
+	    imagesLayout.addComponent(hl);
+	});
+
+	layout.addComponents(title, imagesLayout);
 
 	layout.setExpandRatio(title, 0.2f);
 	layout.setExpandRatio(imagesLayout, 8.8f);
@@ -81,17 +84,6 @@ public class DiceSetupView extends CssLayout {
 
 	addComponent(layout);
 
-    }
-
-    /**
-     * On back click.
-     *
-     * @param e
-     *            the e
-     */
-    private void onBackClick(ClickEvent e) {
-	MyUI ui = (MyUI) UI.getCurrent();
-	ui.getController().goTo(ViewController.VIEW_MAIN_MENU);
     }
 
     /**

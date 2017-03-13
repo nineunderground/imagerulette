@@ -11,6 +11,9 @@ import com.vaadin.ui.CssLayout;
  */
 public class DiceGalleryView extends CssLayout {
 
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = -3339347895009704574L;
+
     /**
      * Instantiates a new gallery.
      */

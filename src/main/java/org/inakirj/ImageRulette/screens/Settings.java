@@ -3,7 +3,6 @@
  */
 package org.inakirj.ImageRulette.screens;
 
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
 /**
@@ -11,18 +10,14 @@ import com.vaadin.ui.CssLayout;
  *
  */
 public class Settings extends CssLayout {
-    /**
-     * 
-     */
-    public Settings() {
-	// TODO Auto-generated constructor stub
-    }
+
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = -2827095393080319901L;
 
     /**
-     * @param children
+     * Instantiates a new settings.
      */
-    public Settings(Component... children) {
-	super(children);
+    public Settings() {
 	// TODO Auto-generated constructor stub
     }
 

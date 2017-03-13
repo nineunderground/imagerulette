@@ -2,10 +2,10 @@ package org.inakirj.ImageRulette;
 
 import java.util.List;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
-import org.inakirj.ImageRulette.engine.ViewController;
-import org.inakirj.ImageRulette.screens.DiceGalleryView;
 import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
@@ -18,7 +18,9 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 
 /**
@@ -35,31 +37,34 @@ import com.vaadin.ui.UI;
  */
 // @Theme("mytheme")
 @Theme("mymobiletheme")
-// @SplashScreen(value = "VAADIN/splash.png", width = 400, height = 400)
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("My Simple App")
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
-    private ViewController mainController = new ViewController();
     private List<Object> generateLotteryList;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 	TabBarView tabManager = new TabBarView();
-	NavigationView tabContent1 = new NavigationView();
-	NavigationView tabContent2 = new NavigationView();
-	NavigationView tabContent3 = new NavigationView();
 
-	tabContent1.setContent(new DiceGalleryView());
-	tabContent1.setData("1");
-	tabManager.addTab(tabContent1, "GALLERY");
+	// NavigationView tabContent1 = new NavigationView();
+	NavigationView tabContent2 = new NavigationView();
+	tabContent2.setToolbar(null);
+	NavigationView tabContent3 = new NavigationView();
+	tabContent3.setToolbar(null);
+
+	// tabContent1.setContent(new DiceGalleryView());
+	// tabContent1.setData("1");
+	// tabManager.addTab(tabContent1, "GALLERY");
 	tabContent2.setContent(new DiceSetupView(tabContent3));
 	tabContent2.setData("2");
-	tabManager.addTab(tabContent2, "SETUP");
+	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
+	tabSetup.setIcon(FontAwesome.PICTURE_O);
 	tabContent3.setContent(new DicePlayView());
 	tabContent3.setData("3");
-	tabManager.addTab(tabContent3, "DICE");
+	Tab tabPlay = tabManager.addTab(tabContent3, "DICE");
+	tabPlay.setIcon(FontAwesome.CUBE);
 	tabContent3.setEnabled(false);
 	tabManager.setSelectedTab(tabContent2);
 	tabManager.addListener(new SelectedTabChangeListener() {
@@ -92,18 +97,14 @@ public class MyUI extends UI {
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends TouchKitServlet {
 	private static final long serialVersionUID = 1259803207649501173L;
-	// @Override
-	// public void init(ServletConfig servletConfig) throws ServletException
-	// {
-	// super.init(servletConfig);
-	//
-	// // Hook up with the framework's host page generation
-	// SplashScreenHandler.init(getService());
-	// }
-    }
 
-    public ViewController getController() {
-	return mainController;
+	@Override
+	public void init(ServletConfig servletConfig) throws ServletException {
+	    super.init(servletConfig);
+	    //
+	    // Hook up with the framework's host page generation
+	    // SplashScreenHandler.init(getService());
+	}
     }
 
     public void setLottery(List<Object> generateLotteryList) {
