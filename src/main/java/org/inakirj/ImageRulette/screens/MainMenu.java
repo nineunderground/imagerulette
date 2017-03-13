@@ -5,68 +5,61 @@ import org.inakirj.ImageRulette.engine.ViewController;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * The Class MainMenu.
  *
  * @author inaki
  */
-public class MainMenu extends CssLayout {
+public class MainMenu extends VerticalLayout {
 
     private static final long serialVersionUID = -5062613950325511977L;
 
     /**
      * Instantiates a new main menu.
-     * 
-     * @param vc
      */
     public MainMenu() {
 	setLayout();
     }
 
     /**
-     * Instantiates a new main menu.
-     *
-     * @param children
-     *            the children
-     */
-    public MainMenu(Component... children) {
-	super(children);
-    }
-
-    /**
      * Set content
      */
     private void setLayout() {
-	VerticalLayout layout = new VerticalLayout();
+	VerticalLayout layout = this;
 	layout.setSizeFull();
 
-	Button newBtn = new Button("NEW");
+	Button newBtn = new Button("START");
+	newBtn.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 	newBtn.addClickListener(this::onNewDiceClick);
-	newBtn.setWidth("100%");
+	newBtn.setSizeFull();
 
 	Button settingsBtn = new Button("SETTINGS");
 	settingsBtn.addClickListener(this::onSettingsClick);
-	settingsBtn.setWidth("100%");
+	settingsBtn.setSizeFull();
+	settingsBtn.setEnabled(false);
 
 	Button aboutBtn = new Button("ABOUT");
+	aboutBtn.setVisible(true);
 	aboutBtn.addClickListener(this::onAboutClick);
-	aboutBtn.setWidth("100%");
+	aboutBtn.setSizeFull();
 
-	layout.addComponents(newBtn, settingsBtn, aboutBtn);
+	layout.addComponents(newBtn, settingsBtn, aboutBtn);// , settingsBtn,
+							    // aboutBtn
 
-	addComponent(layout);
+	// addComponent(layout);
     }
 
     /**
-     * 
+     * On settings click.
+     *
      * @param o
+     *            the o
      */
     private void onSettingsClick(ClickEvent o) {
 	MyUI ui = (MyUI) UI.getCurrent();

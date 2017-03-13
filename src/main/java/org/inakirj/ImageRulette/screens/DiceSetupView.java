@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import org.inakirj.ImageRulette.MyUI;
 import org.inakirj.ImageRulette.engine.ViewController;
 
+import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
@@ -31,29 +32,29 @@ import com.vaadin.ui.VerticalLayout;
  * @author inaki
  *
  */
-public class DiceSetup extends CssLayout {
+public class DiceSetupView extends CssLayout {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5623498581320518810L;
     private List<HorizontalLayout> iconItemLayoutList;
-    private Button goBtn;
+    private NavigationView tabContent3;
 
     /**
      * Basic constructor
+     * 
+     * @param tabContent3
+     * 
+     * @param tabManager
      */
-    public DiceSetup() {
+    public DiceSetupView(NavigationView tabContent3) {
 	iconItemLayoutList = new ArrayList<>();
+	this.tabContent3 = tabContent3;
 	setLayout();
     }
 
     /**
-     * @param children
+     * Sets the layout.
      */
-    public DiceSetup(Component... children) {
-	super(children);
-	// TODO Auto-generated constructor stub
-    }
-
     private void setLayout() {
 	VerticalLayout layout = new VerticalLayout();
 	layout.setSizeFull();
@@ -72,15 +73,11 @@ public class DiceSetup extends CssLayout {
 	Button backBtn = new Button("BACK");
 	backBtn.addClickListener(this::onBackClick);
 	buttons.addComponent(backBtn);
-	goBtn = new Button("GO");
-	goBtn.addClickListener(this::onGoClick);
-	goBtn.setEnabled(false);
-	buttons.addComponent(goBtn);
 	layout.addComponents(title, imagesLayout, buttons);
 
 	layout.setExpandRatio(title, 0.2f);
 	layout.setExpandRatio(imagesLayout, 8.8f);
-	layout.setExpandRatio(buttons, 1);
+	// layout.setExpandRatio(buttons, 1);
 
 	addComponent(layout);
 
@@ -99,14 +96,11 @@ public class DiceSetup extends CssLayout {
 
     /**
      * On go click.
-     *
-     * @param e
-     *            the e
      */
-    private void onGoClick(ClickEvent e) {
-	List<Object> randomList = generateLotteryList();
+    public void startLottery() {
 	MyUI ui = (MyUI) UI.getCurrent();
-	ui.getController().goTo(ViewController.VIEW_DICE_PLAY, randomList);
+	ui.setLottery(generateLotteryList());
+	// ui.getController().goTo(ViewController.VIEW_DICE_PLAY, randomList);
     }
 
     /**
@@ -139,6 +133,7 @@ public class DiceSetup extends CssLayout {
 	FileResource resource = new FileResource(new File(
 		VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/WEB-INF/image/" + value + ".png"));
 	Image image = new Image("", resource);
+	image.setData(value);
 	image.setSizeFull();
 
 	ComboBox cmb = new ComboBox();
@@ -150,7 +145,7 @@ public class DiceSetup extends CssLayout {
 	cmb.setValue(cmbValues.get(0));
 	cmb.setWidth("70px");
 	cmb.setHeight(100, Unit.PERCENTAGE);
-	cmb.addValueChangeListener(e -> checkValues(e));
+	cmb.addValueChangeListener(this::enableDiceTabOrNot);
 
 	HorizontalLayout iconItemLayout = new HorizontalLayout();
 	iconItemLayout.setSizeFull();
@@ -164,15 +159,22 @@ public class DiceSetup extends CssLayout {
 	return iconItemLayout;
     }
 
-    private void checkValues(ValueChangeEvent e) {
+    /**
+     * Check values.
+     *
+     * @param e
+     *            the e
+     */
+    private void enableDiceTabOrNot(ValueChangeEvent e) {
 	for (HorizontalLayout hl : iconItemLayoutList) {
 	    ComboBox cmb = (ComboBox) hl.getComponent(1);
 	    if (!((String) cmb.getValue()).equals("0")) {
-		goBtn.setEnabled(true);
+		tabContent3.setEnabled(true);
+		startLottery();
 		return;
 	    }
 	}
-	goBtn.setEnabled(false);
+	tabContent3.setEnabled(false);
     }
 
 }

@@ -5,9 +5,9 @@ package org.inakirj.ImageRulette.engine;
 
 import java.util.List;
 
-import org.inakirj.ImageRulette.screens.DicePlay;
-import org.inakirj.ImageRulette.screens.DiceSetup;
-import org.inakirj.ImageRulette.screens.Gallery;
+import org.inakirj.ImageRulette.screens.DiceGalleryView;
+import org.inakirj.ImageRulette.screens.DicePlayView;
+import org.inakirj.ImageRulette.screens.DiceSetupView;
 import org.inakirj.ImageRulette.screens.MainMenu;
 import org.inakirj.ImageRulette.screens.Settings;
 
@@ -27,10 +27,10 @@ public class ViewController {
     private int currentView = VIEW_MAIN_MENU;
 
     public MainMenu mainMenuContent = new MainMenu();
-    public DiceSetup setupDiceContent = new DiceSetup();
+    public DiceSetupView setupDiceContent = null;
     public Settings settingsContent = new Settings();
-    public DicePlay dicePlayContent = new DicePlay();
-    public Gallery galleryContent = new Gallery();
+    public DicePlayView dicePlayContent = new DicePlayView();
+    public DiceGalleryView galleryContent = new DiceGalleryView();
 
     /**
      * Main constructor

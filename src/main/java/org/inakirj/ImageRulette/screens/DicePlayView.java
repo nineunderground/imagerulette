@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.inakirj.ImageRulette.MyUI;
-import org.inakirj.ImageRulette.engine.ViewController;
+import org.inakirj.ImageRulette.utils.ImageUtils;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
@@ -38,7 +37,7 @@ import com.vaadin.ui.Window;
  * @author inaki
  *
  */
-public class DicePlay extends CssLayout {
+public class DicePlayView extends CssLayout {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5317042828250752413L;
@@ -46,25 +45,23 @@ public class DicePlay extends CssLayout {
     private List<Object> lotteryList;
     private Image randomImgToBeReplaced;
     private VerticalLayout layout;
-    private Map<Image, Integer> statsMap = new HashMap<>();
+    private Map<Integer, Integer> statsImageIdOcurrencesMap = new HashMap<>();
 
     /**
      * Instantiates a new dice play.
      */
-    public DicePlay() {
+    public DicePlayView() {
 	setLayout();
     }
 
     /**
      * @param lotteryList
      */
-    public void setupLottery(List<Object> lotteryList) {
-	// randomImgToBeReplaced = new Image();
-	// randomImgToBeReplaced.setWidth(78, Unit.PIXELS);
-	// randomImgToBeReplaced.setHeight(81, Unit.PIXELS);
-	this.lotteryList = lotteryList;
-	statsMap.clear();
-	lotteryList.stream().forEach(img -> statsMap.put((Image) img, new Integer(1)));
+    public void setupLottery(List<Object> lotteryListGenerated) {
+	this.lotteryList = new ArrayList<Object>(lotteryListGenerated);
+	statsImageIdOcurrencesMap.clear();
+	this.lotteryList.stream()
+		.forEach(img -> statsImageIdOcurrencesMap.put(ImageUtils.getId((Image) img), new Integer(1)));
     }
 
     /**
@@ -78,17 +75,14 @@ public class DicePlay extends CssLayout {
 
 	FileResource resource = new FileResource(
 		new File(VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/WEB-INF/image/nope.png"));
-	Image image = new Image("", resource);
+	Image none = new Image("", resource);
 
-	randomImgToBeReplaced = new Image();
+	randomImgToBeReplaced = none;
 	randomImgToBeReplaced.setWidth(78, Unit.PIXELS);
 	randomImgToBeReplaced.setHeight(81, Unit.PIXELS);
 
 	HorizontalLayout buttons = new HorizontalLayout();
 	buttons.setSizeFull();
-	Button backBtn = new Button("BACK");
-	backBtn.addClickListener(this::onBackClick);
-	buttons.addComponent(backBtn);
 	Button goBtn = new Button("LOTTERY");
 	goBtn.addClickListener(this::onPickABallClick);
 	buttons.addComponent(goBtn);
@@ -100,6 +94,7 @@ public class DicePlay extends CssLayout {
 	layout.addComponent(randomImgToBeReplaced);
 	layout.addComponent(buttons);
 	layout.addComponent(stats);
+
 	layout.setExpandRatio(title, 1);
 	layout.setExpandRatio(randomImgToBeReplaced, 2);
 	layout.setExpandRatio(buttons, 1);
@@ -115,29 +110,26 @@ public class DicePlay extends CssLayout {
      *            the e
      */
     private void showStats(ClickEvent e) {
-
 	Window popup = new Window("STATS");
 	popup.setModal(true);
 	popup.setResizable(false);
 	popup.setDraggable(false);
 	popup.setSizeFull();
-	long totalImagesRendered = statsMap.values().stream().reduce(0, Integer::sum);
-	Map<Image, Integer> statsMapSorted = new LinkedHashMap<>();
-	Comparator<? super Entry<Image, Integer>> sorting = Map.Entry.<Image, Integer> comparingByValue().reversed();
-	statsMap.entrySet().stream().sorted(sorting)
+	long totalImagesRendered = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
+	Map<Integer, Integer> statsMapSorted = new LinkedHashMap<>();
+	Comparator<? super Entry<Integer, Integer>> sorting = Map.Entry.<Integer, Integer> comparingByValue()
+		.reversed();
+	statsImageIdOcurrencesMap.entrySet().stream().sorted(sorting)
 		.forEachOrdered(entry -> statsMapSorted.put(entry.getKey(), entry.getValue()));
 	List<HorizontalLayout> statsRows = new ArrayList<>();
-	for (Entry<Image, Integer> entry : statsMapSorted.entrySet()) {
+	for (Entry<Integer, Integer> entry : statsMapSorted.entrySet()) {
 	    HorizontalLayout row = new HorizontalLayout();
-
-	    Image img = entry.getKey();
+	    Image img = ImageUtils.getImage(entry.getKey());
 	    Label label = new Label(getCalculation(entry.getValue(), totalImagesRendered));
 	    row.addComponent(img);
 	    row.addComponent(label);
-
 	    row.setComponentAlignment(img, Alignment.BOTTOM_LEFT);
 	    row.setComponentAlignment(label, Alignment.BOTTOM_LEFT);
-
 	    statsRows.add(row);
 	}
 
@@ -167,18 +159,6 @@ public class DicePlay extends CssLayout {
     }
 
     /**
-     * On back click.
-     *
-     * @param e
-     *            the e
-     */
-    private void onBackClick(ClickEvent e) {
-	MyUI ui = (MyUI) UI.getCurrent();
-	ui.getController().setupDiceContent = new DiceSetup();
-	ui.getController().goTo(ViewController.VIEW_SETUP_DICE);
-    }
-
-    /**
      * On pick A ball click.
      *
      * @param e
@@ -186,12 +166,12 @@ public class DicePlay extends CssLayout {
      */
     private void onPickABallClick(ClickEvent e) {
 	int value = randomizer.nextInt(lotteryList.size());
-	Image img = (Image) lotteryList.get(value);
+	Image img = ImageUtils.getImage((Image) lotteryList.get(value));
 	img.setWidth(78, Unit.PIXELS);
 	img.setHeight(81, Unit.PIXELS);
 	layout.replaceComponent(randomImgToBeReplaced, img);
 	randomImgToBeReplaced = img;
-	refreshStats(img);
+	refreshStats((int) img.getData());
     }
 
     /**
@@ -200,10 +180,10 @@ public class DicePlay extends CssLayout {
      * @param imgToIncrease
      *            the img to increase
      */
-    private void refreshStats(Image imgToIncrease) {
-	Integer currentValue = statsMap.get(imgToIncrease);
+    private void refreshStats(int imgIdToIncrease) {
+	Integer currentValue = statsImageIdOcurrencesMap.get(imgIdToIncrease);
 	currentValue++;
-	statsMap.put(imgToIncrease, new Integer(currentValue));
+	statsImageIdOcurrencesMap.put(imgIdToIncrease, new Integer(currentValue));
     }
 
 }

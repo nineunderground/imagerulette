@@ -67,12 +67,15 @@
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
 		<dependency>
+		   <groupId>com.vaadin.addon</groupId>
+		   <artifactId>vaadin-touchkit-agpl</artifactId>
+		   <version>4.1.0</version>
+		</dependency>
+		<dependency>
 		   <groupId>org.vaadin.leif</groupId>
 		   <artifactId>splashscreen</artifactId>
 		   <version>0.2</version>
 		</dependency>
-		<!--  
-		-->
 	</dependencies>
 
 	<build>
