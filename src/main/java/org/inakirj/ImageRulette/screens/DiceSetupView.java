@@ -52,10 +52,18 @@ public class DiceSetupView extends CssLayout {
 	imagesLayout.setWidth(100, Unit.PERCENTAGE);
 	IntStream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).forEach(i -> {
 	    HorizontalLayout sliderLAyout = new HorizontalLayout();
+	    if (i % 2 == 0) {
+		sliderLAyout.addStyleName("dice-banner-1");
+	    } else {
+		sliderLAyout.addStyleName("dice-banner-2");
+	    }
 	    sliderLAyout.setWidth(100, Unit.PERCENTAGE);
 	    Image img = ImageUtils.getImage(i);
+	    img.addStyleName("dice-image");
 	    Slider slider = new Slider();
+	    slider.addStyleName("dice-slider");
 	    Label total = new Label();
+	    total.addStyleName("size-24");// TODO is not working
 	    // Adding image
 	    sliderLAyout.addComponent(img);
 	    // Adding slider

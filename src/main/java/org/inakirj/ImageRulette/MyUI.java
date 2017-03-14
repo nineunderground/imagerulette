@@ -20,6 +20,8 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 
@@ -35,23 +37,32 @@ import com.vaadin.ui.UI;
  *         is intended to be overridden to add component to the user interface
  *         and initialize non-component functionality.
  */
-// @Theme("mytheme")
-@Theme("mymobiletheme")
+@Theme("mytheme")
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("Dice Rulette")
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
     private List<Object> generateLotteryList;
+    private NavigationView tabContent2;
+    private NavigationView tabContent3;
+    private DicePlayView setupLayout;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 	TabBarView tabManager = new TabBarView();
+	tabManager.addStyleName("tab-style");
 
 	// NavigationView tabContent1 = new NavigationView();
-	NavigationView tabContent2 = new NavigationView();
-	tabContent2.setCaption("Setup the dice images");
-	NavigationView tabContent3 = new NavigationView();
+	tabContent2 = new NavigationView();
+	tabContent2.setCaption("Create your dice pool");
+	tabContent2.addStyleName("view-background");
+	Button resetSliders = new Button("RESET");
+	resetSliders.addClickListener(this::onResetSliders);
+	resetSliders.addStyleName("reset-button");
+	tabContent2.setRightComponent(resetSliders);
+
+	tabContent3 = new NavigationView();
 	tabContent3.setCaption("Roll the dice");
 
 	// tabContent1.setContent(new DiceGalleryView());
@@ -61,7 +72,8 @@ public class MyUI extends UI {
 	tabContent2.setData("2");
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
 	tabSetup.setIcon(FontAwesome.PICTURE_O);
-	tabContent3.setContent(new DicePlayView());
+	setupLayout = new DicePlayView();
+	tabContent3.setContent(setupLayout);
 	tabContent3.setData("3");
 	Tab tabPlay = tabManager.addTab(tabContent3, "DICE");
 	tabPlay.setIcon(FontAwesome.CUBE);
@@ -87,6 +99,20 @@ public class MyUI extends UI {
 	setContent(tabManager);
     }
 
+    /**
+     * On reset sliders.
+     *
+     * @param e
+     *            the e
+     */
+    private void onResetSliders(ClickEvent event) {
+	tabContent3.setEnabled(false);
+	tabContent2.setContent(new DiceSetupView(tabContent3));
+    }
+
+    /**
+     * The Class MyUIServlet.
+     */
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends TouchKitServlet {
@@ -112,6 +138,12 @@ public class MyUI extends UI {
 	}
     }
 
+    /**
+     * Sets the lottery.
+     *
+     * @param generateLotteryList
+     *            the new lottery
+     */
     public void setLottery(List<Object> generateLotteryList) {
 	this.generateLotteryList = generateLotteryList;
     }

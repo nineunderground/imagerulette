@@ -29,10 +29,128 @@
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
-@import "../valo/valo.scss";
+// @import "../valo/valo.scss";
+// @import "../valo/mymobiletheme.scss";
 
 @mixin mytheme {
-  @include valo;
+  // @include valo;
+  // @include mymobiletheme
 
   // Insert your own theme rules here
+  /* An actual theme rule */
+	.dice-view-buttons .v-button-wrap {
+  		font-size: 40px;
+  	}
+  	
+  	.dice-image{
+  		border: 1px solid #ddd;
+	    border-radius: 4px;
+    	padding: 5px;
+    	max-width: 100%;
+    	height: auto;
+  	}
+  	
+  	.dice-image:hover {
+    	box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+	}
+	
+	.dice-slider .v-slider-handle {
+	    background: #634b4b;
+	    width: 40px;
+	    height: 22px;
+	    border-radius: 44px;
+	    margin-top: -9px;
+	    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+	    border: 1px solid rgba(0, 0, 0, 0.3);
+	    font-size: 0px;
+	}
+	
+	.dice-slider .v-slider-base{
+		background: steelblue;
+		height: 16px;
+	}
+	
+	.dice-slider .v-slider-handle:before {
+	    content: "";
+	    position: absolute;
+	    margin-left: 12px;
+	    margin-top: 6px;
+	    background: #ed5931;
+	    width: 14px;
+	    height: 11px;
+	    border-radius: 4px;
+	}
+	
+	.dice-banner-1 {
+    	background-color: dodgerblue;
+    	border-style: ridge;
+    	border-width: 4px 4px 4px 4px;
+	}
+	
+	.dice-banner-2 {
+    	background-color: lightcyan;
+    	border-style: solid;
+    	border-width: 4px 4px 4px 4px;
+	}
+	
+	.v-caption-on-top>.v-caption, .v-caption-on-bottom>.v-caption{
+    	display: none;
+	}
+	
+	.view-background .v-touchkit-navbar{
+		background: aliceblue;
+	}
+	
+	.view-background .v-touchkit-verticalcomponentgroup{
+		background: lightblue;
+	}
+	
+	.v-label.v-has-width{
+		font-size: 24px;
+	}
+	
+	.v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button{
+		background: lightskyblue;
+	}
+	
+	.v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button-selected{
+		background: darkblue;
+	}
+	
+	/* separator */
+	.v-touchkit-componentgroup-row:before{
+		border-top: 1px solid #ef2525;
+	}
+	
+	/* Rest button */
+	.reset-button .v-button-wrap{
+		border-style: solid;
+    	border-width: 2px 2px 2px 2px;
+	}
+	
+	.dice-image-stats{
+		border: 1px solid #ddd;
+	    border-radius: 30px;
+    	padding: 5px;
+    	max-width: 50%;
+    	height: auto;
+	}
+	
+	/* vertical-align: middle; */
+	
+	.stats-row-1 .v-slot .v-slot-stats-row-1{
+    	background: palegreen;
+    	color: cornsilk;
+	}
+	
+	.stats-row-2 .v-slot .v-slot-stats-row-2{
+    	background: green;
+    	color: cornsilk;
+	}
+	
+	.random-image{
+		border-style: ridge;
+    	border-width: 6px 6px 6px 6px;
+	}
+
 }
