@@ -152,5 +152,34 @@
 		border-style: ridge;
     	border-width: 6px 6px 6px 6px;
 	}
-
+	
+	.v-slot.v-slot-dice-button-roll {
+		.v-button{
+			background: green;
+			margin-top: 10px;
+			color: #abe800;
+			line-height: 1;
+			font-size: 40px;
+		}
+	}
+	
+	.stats-table{
+		.v-table-row{
+			background: palegreen;
+    		color: cornsilk;
+		}
+		
+		.v-table-row-odd{
+			background: green;
+    		color: cornsilk;
+		}
+		
+		.v-table-cell-content{
+			padding: 0px 7px 0px 6px;
+			vertical-align: middle;
+			
+		}
+	
+	}
+	
 }

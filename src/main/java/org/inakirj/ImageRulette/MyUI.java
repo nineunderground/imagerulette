@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
+import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
 import com.vaadin.addon.touchkit.settings.TouchKitSettings;
 import com.vaadin.addon.touchkit.ui.NavigationView;
@@ -40,6 +41,7 @@ import com.vaadin.ui.UI;
 @Theme("mytheme")
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("Dice Rulette")
+@OfflineModeEnabled
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
@@ -76,7 +78,7 @@ public class MyUI extends UI {
 	tabContent3.setContent(setupLayout);
 	tabContent3.setData("3");
 	Tab tabPlay = tabManager.addTab(tabContent3, "DICE");
-	tabPlay.setIcon(FontAwesome.CUBE);
+	tabPlay.setIcon(FontAwesome.CUBES);
 	tabContent3.setEnabled(false);
 	tabManager.setSelectedTab(tabContent2);
 	tabManager.addListener(new SelectedTabChangeListener() {

@@ -50,7 +50,7 @@ public class DiceSetupView extends CssLayout {
     private void setLayout() {
 	imagesLayout = new VerticalComponentGroup();
 	imagesLayout.setWidth(100, Unit.PERCENTAGE);
-	IntStream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).forEach(i -> {
+	IntStream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).forEach(i -> {
 	    HorizontalLayout sliderLAyout = new HorizontalLayout();
 	    if (i % 2 == 0) {
 		sliderLAyout.addStyleName("dice-banner-1");
