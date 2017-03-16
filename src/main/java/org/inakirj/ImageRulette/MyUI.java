@@ -108,6 +108,7 @@ public class MyUI extends UI {
      *            the e
      */
     private void onResetSliders(ClickEvent event) {
+	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
 	tabContent3.setEnabled(false);
 	tabContent2.setContent(new DiceSetupView(tabContent3));
     }

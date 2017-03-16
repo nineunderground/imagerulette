@@ -18,6 +18,7 @@ import java.util.Random;
 import org.inakirj.ImageRulette.utils.ImageUtils;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinService;
@@ -27,7 +28,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -48,8 +48,9 @@ public class DicePlayView extends CssLayout {
     private Image randomImgToBeReplaced;
     private Map<Integer, Integer> statsImageIdOcurrencesMap = new HashMap<>();
     private HorizontalLayout imageLayout;
-    private Table statsLayout;
+    public Table statsLayout;
     private VerticalLayout mainLayout;
+    private long initialImages;
 
     /**
      * Instantiates a new dice play.
@@ -65,7 +66,8 @@ public class DicePlayView extends CssLayout {
 	this.lotteryList = new ArrayList<Object>(lotteryListGenerated);
 	statsImageIdOcurrencesMap.clear();
 	this.lotteryList.stream()
-		.forEach(img -> statsImageIdOcurrencesMap.put(ImageUtils.getId((Image) img), new Integer(1)));
+		.forEach(img -> statsImageIdOcurrencesMap.put(ImageUtils.getId((Image) img), new Integer(0)));
+	initialImages = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
     }
 
     /**
@@ -107,7 +109,8 @@ public class DicePlayView extends CssLayout {
      */
     private void calculateStats() {
 	long totalImagesRendered = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
-	Map<Image, Label> statsRowsMap = new HashMap<Image, Label>();
+	// totalImagesRendered = totalImagesRendered - initialImages;
+	Map<Image, Double> statsRowsMap = new HashMap<Image, Double>();
 	Iterator<Entry<Integer, Integer>> iterator = statsImageIdOcurrencesMap.entrySet().iterator();
 	int rowCount = 0;
 	while (iterator.hasNext()) {
@@ -115,18 +118,31 @@ public class DicePlayView extends CssLayout {
 	    Entry<Integer, Integer> entry = iterator.next();
 	    Image img = ImageUtils.getImage(entry.getKey());
 	    img.addStyleName("dice-image-stats");
-	    Label label = new Label(getCalculation(entry.getValue(), totalImagesRendered));
+	    double label = getCalculation(entry.getValue(), totalImagesRendered);
 	    statsRowsMap.put(img, label);
 	    rowCount++;
 	}
 	Table popupContent;
 	if (statsLayout == null) {
-	    popupContent = new Table();
+	    popupContent = new Table() {
+
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = -7151527404141301908L;
+
+		@Override
+		protected String formatPropertyValue(Object rowId, Object colId, Property<?> property) {
+		    if (colId.equals(oddCol)) {
+			return super.formatPropertyValue(rowId, colId, property) + " %";
+		    }
+		    return super.formatPropertyValue(rowId, colId, property);
+		}
+
+	    };
 	    popupContent.setSortEnabled(false);
 	    popupContent.addStyleName("stats-table");
 	    popupContent.setWidth(100, Unit.PERCENTAGE);
 	    popupContent.addContainerProperty(imageCol, Image.class, null);
-	    popupContent.addContainerProperty(oddCol, Label.class, "0.00 %");
+	    popupContent.addContainerProperty(oddCol, BigDecimal.class, null);
 	} else {
 	    popupContent = statsLayout;
 	    popupContent.removeAllItems();
@@ -134,7 +150,8 @@ public class DicePlayView extends CssLayout {
 	statsRowsMap.entrySet().stream().forEach(entry -> {
 	    Item row1 = popupContent.getItem(popupContent.addItem());
 	    row1.getItemProperty(imageCol).setValue(entry.getKey());
-	    row1.getItemProperty(oddCol).setValue(entry.getValue());
+	    BigDecimal bg = BigDecimal.valueOf(entry.getValue());
+	    row1.getItemProperty(oddCol).setValue(bg);
 	});
 	popupContent.setPageLength(statsRowsMap.size());
 	popupContent.sort(new String[] { oddCol }, new boolean[] { false });
@@ -155,20 +172,16 @@ public class DicePlayView extends CssLayout {
      *            the total images rendered
      * @return the calculation
      */
-    private String getCalculation(Integer valueToPercentage, long totalImagesRendered) {
+    private double getCalculation(Integer valueToPercentage, long totalImagesRendered) {
 	BigDecimal num = BigDecimal.valueOf(valueToPercentage).multiply(BigDecimal.valueOf(100));
 	BigDecimal div = BigDecimal.valueOf(totalImagesRendered);
 	BigDecimal division = num.divide(div, 2, RoundingMode.HALF_UP);
 	BigDecimal percentage = division.setScale(2, RoundingMode.HALF_UP);
-	String calculation = percentage.doubleValue() + " %";
-	return calculation;
+	return percentage.doubleValue();
     }
 
     /**
-     * On pick A ball click.
-     *
-     * @param e
-     *            the e
+     * Loop thread.
      */
     private void onPickABallClick(ClickEvent e) {
 	int value = randomizer.nextInt(lotteryList.size());
@@ -178,7 +191,7 @@ public class DicePlayView extends CssLayout {
 	img.addStyleName("random-image");
 	imageLayout.replaceComponent(randomImgToBeReplaced, img);
 	randomImgToBeReplaced = img;
-	int imgIdToIncrease = (int) img.getData();
+	int imgIdToIncrease = (int) randomImgToBeReplaced.getData();
 	Integer currentValue = statsImageIdOcurrencesMap.get(imgIdToIncrease);
 	currentValue++;
 	statsImageIdOcurrencesMap.put(imgIdToIncrease, new Integer(currentValue));
