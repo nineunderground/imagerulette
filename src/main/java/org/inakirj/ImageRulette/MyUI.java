@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
+import com.vaadin.addon.touchkit.annotations.CacheManifestEnabled;
 import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
 import com.vaadin.addon.touchkit.settings.TouchKitSettings;
@@ -15,6 +16,7 @@ import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.TabBarView;
 import com.vaadin.addon.touchkit.ui.TabBarView.SelectedTabChangeEvent;
 import com.vaadin.addon.touchkit.ui.TabBarView.SelectedTabChangeListener;
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -42,6 +44,8 @@ import com.vaadin.ui.UI;
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("Dice Rulette")
 @OfflineModeEnabled
+@CacheManifestEnabled
+@PreserveOnRefresh
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
@@ -52,6 +56,7 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
 	TabBarView tabManager = new TabBarView();
 	tabManager.addStyleName("tab-style");
 
@@ -59,9 +64,10 @@ public class MyUI extends UI {
 	tabContent2 = new NavigationView();
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
-	Button resetSliders = new Button("RESET");
+	Button resetSliders = new Button();
 	resetSliders.addClickListener(this::onResetSliders);
 	resetSliders.addStyleName("reset-button");
+	resetSliders.setIcon(FontAwesome.TRASH);
 	tabContent2.setRightComponent(resetSliders);
 
 	tabContent3 = new NavigationView();
@@ -108,6 +114,9 @@ public class MyUI extends UI {
      *            the e
      */
     private void onResetSliders(ClickEvent event) {
+	// DetailsPopover popover = new DetailsPopover();
+	// popover.showRelativeTo(view.getNavigationBar());
+
 	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
 	tabContent3.setEnabled(false);
 	tabContent2.setContent(new DiceSetupView(tabContent3));
@@ -135,9 +144,11 @@ public class MyUI extends UI {
 	    // App icon
 	    s.getApplicationIcons().addApplicationIcon(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
 	    // Splash screen
-	    s.getWebAppSettings().setStartupImage(contextPath + "VAADIN/themes/splash.png");
+	    // s.getWebAppSettings().setStartupImage(contextPath +
+	    // "VAADIN/themes/splash.png");
 	    // ViewPortSettings vp = s.getViewPortSettings();
 	    // vp.setViewPortUserScalable(true);
+
 	}
     }
 
