@@ -33,9 +33,9 @@
 // @import "../valo/mymobiletheme.scss";
 
 @mixin mytheme {
-    // @include valo;
-    // @include mymobiletheme
-    
+  // @include valo;
+  // @include mymobiletheme
+
   // Insert your own theme rules here
   /* An actual theme rule */
 	.dice-view-buttons .v-button-wrap {
@@ -66,7 +66,7 @@
 	}
 	
 	.dice-slider .v-slider-base{
-		background: #000000;
+		background: steelblue;
 		height: 16px;
 	}
 	
@@ -75,20 +75,20 @@
 	    position: absolute;
 	    margin-left: 12px;
 	    margin-top: 6px;
-	    background: #c3ae57;
+	    background: #ed5931;
 	    width: 14px;
 	    height: 11px;
 	    border-radius: 4px;
 	}
 	
 	.dice-banner-1 {
-    	background-color: #699c6d;
+    	background-color: dodgerblue;
     	border-style: ridge;
     	border-width: 4px 4px 4px 4px;
 	}
 	
 	.dice-banner-2 {
-    	background-color: #11401b;
+    	background-color: lightcyan;
     	border-style: solid;
     	border-width: 4px 4px 4px 4px;
 	}
@@ -97,48 +97,35 @@
     	display: none;
 	}
 	
-	/* View title background */
 	.view-background .v-touchkit-navbar{
-		background: #3b8c31;
-		color: darkslategray;
+		background: aliceblue;
 	}
 	
 	.view-background .v-touchkit-verticalcomponentgroup{
-		background: #1e3c23;
+		background: lightblue;
 	}
 	
 	.v-label.v-has-width{
 		font-size: 24px;
 	}
 	
-	/*Tab unselected*/
 	.v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button{
-		background: #d0d6b5;
-		color: #000000;
+		background: lightskyblue;
 	}
 	
-	/*Tab name selected*/
 	.v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button-selected{
-		background: #637704;
-		color: white;
+		background: darkblue;
 	}
 	
 	/* separator */
 	.v-touchkit-componentgroup-row:before{
-		border-top: 1px solid #d09062;
+		border-top: 1px solid #ef2525;
 	}
 	
-	/* Reset button 
-	*/
+	/* Rest button */
 	.reset-button .v-button-wrap{
 		border-style: solid;
     	border-width: 2px 2px 2px 2px;
-    	color: darkred;
-    	background: black;
-    	border-radius: 12px;
-    	border-color: transparent;
-    	width: 50%;
-    	font-size: x-large;
 	}
 	
 	.dice-image-stats{

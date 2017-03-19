@@ -5,11 +5,9 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
-import org.inakirj.ImageRulette.screens.DiceGalleryView;
 import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
-import com.vaadin.addon.touchkit.annotations.CacheManifestEnabled;
 import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
 import com.vaadin.addon.touchkit.settings.TouchKitSettings;
@@ -17,7 +15,6 @@ import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.TabBarView;
 import com.vaadin.addon.touchkit.ui.TabBarView.SelectedTabChangeEvent;
 import com.vaadin.addon.touchkit.ui.TabBarView.SelectedTabChangeListener;
-import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -45,8 +42,6 @@ import com.vaadin.ui.UI;
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("Dice Rulette")
 @OfflineModeEnabled
-@CacheManifestEnabled
-@PreserveOnRefresh
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
@@ -57,40 +52,28 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-
 	TabBarView tabManager = new TabBarView();
 	tabManager.addStyleName("tab-style");
 
-	NavigationView tabContent1 = new NavigationView();
-	tabContent1.setCaption("Upload");
-	Button uploadButton = new Button();
-	uploadButton.setIcon(FontAwesome.UPLOAD);
-	uploadButton.addStyleName("reset-button");
-	tabContent1.setLeftComponent(uploadButton);
-
+	// NavigationView tabContent1 = new NavigationView();
 	tabContent2 = new NavigationView();
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
-	Button resetSliders = new Button();
+	Button resetSliders = new Button("RESET");
 	resetSliders.addClickListener(this::onResetSliders);
 	resetSliders.addStyleName("reset-button");
-	resetSliders.setIcon(FontAwesome.TRASH);
 	tabContent2.setRightComponent(resetSliders);
 
 	tabContent3 = new NavigationView();
 	tabContent3.setCaption("Roll the dice");
 
 	// tabContent1.setContent(new DiceGalleryView());
+	// tabContent1.setData("1");
 	// tabManager.addTab(tabContent1, "GALLERY");
-
-	tabContent1.setContent(new DiceGalleryView());
-	tabContent1.setData("1");
 	tabContent2.setContent(new DiceSetupView(tabContent3));
 	tabContent2.setData("2");
-	Tab tabUpload = tabManager.addTab(tabContent1, "GALLERY");
-	tabUpload.setIcon(FontAwesome.IMAGE);
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
-	tabSetup.setIcon(FontAwesome.TACHOMETER);
+	tabSetup.setIcon(FontAwesome.PICTURE_O);
 	setupLayout = new DicePlayView();
 	tabContent3.setContent(setupLayout);
 	tabContent3.setData("3");
@@ -125,9 +108,6 @@ public class MyUI extends UI {
      *            the e
      */
     private void onResetSliders(ClickEvent event) {
-	// DetailsPopover popover = new DetailsPopover();
-	// popover.showRelativeTo(view.getNavigationBar());
-
 	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
 	tabContent3.setEnabled(false);
 	tabContent2.setContent(new DiceSetupView(tabContent3));
@@ -155,11 +135,9 @@ public class MyUI extends UI {
 	    // App icon
 	    s.getApplicationIcons().addApplicationIcon(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
 	    // Splash screen
-	    // s.getWebAppSettings().setStartupImage(contextPath +
-	    // "VAADIN/themes/splash.png");
+	    s.getWebAppSettings().setStartupImage(contextPath + "VAADIN/themes/splash.png");
 	    // ViewPortSettings vp = s.getViewPortSettings();
 	    // vp.setViewPortUserScalable(true);
-
 	}
     }
 
