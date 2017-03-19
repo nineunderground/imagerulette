@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
+import org.inakirj.ImageRulette.screens.DiceGalleryView;
 import org.inakirj.ImageRulette.screens.DicePlayView;
 import org.inakirj.ImageRulette.screens.DiceSetupView;
 
@@ -60,7 +61,13 @@ public class MyUI extends UI {
 	TabBarView tabManager = new TabBarView();
 	tabManager.addStyleName("tab-style");
 
-	// NavigationView tabContent1 = new NavigationView();
+	NavigationView tabContent1 = new NavigationView();
+	tabContent1.setCaption("Upload");
+	Button uploadButton = new Button();
+	uploadButton.setIcon(FontAwesome.UPLOAD);
+	uploadButton.addStyleName("reset-button");
+	tabContent1.setLeftComponent(uploadButton);
+
 	tabContent2 = new NavigationView();
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
@@ -74,12 +81,16 @@ public class MyUI extends UI {
 	tabContent3.setCaption("Roll the dice");
 
 	// tabContent1.setContent(new DiceGalleryView());
-	// tabContent1.setData("1");
 	// tabManager.addTab(tabContent1, "GALLERY");
+
+	tabContent1.setContent(new DiceGalleryView());
+	tabContent1.setData("1");
 	tabContent2.setContent(new DiceSetupView(tabContent3));
 	tabContent2.setData("2");
+	Tab tabUpload = tabManager.addTab(tabContent1, "GALLERY");
+	tabUpload.setIcon(FontAwesome.IMAGE);
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
-	tabSetup.setIcon(FontAwesome.PICTURE_O);
+	tabSetup.setIcon(FontAwesome.TACHOMETER);
 	setupLayout = new DicePlayView();
 	tabContent3.setContent(setupLayout);
 	tabContent3.setData("3");
