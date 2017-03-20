@@ -26,7 +26,7 @@
 }
 
 .mytheme .dice-slider .v-slider-base {
-	background: steelblue;
+	background: #000000;
 	height: 16px;
 }
 
@@ -35,20 +35,20 @@
 	position: absolute;
 	margin-left: 12px;
 	margin-top: 6px;
-	background: #ed5931;
+	background: #c3ae57;
 	width: 14px;
 	height: 11px;
 	border-radius: 4px;
 }
 
 .mytheme .dice-banner-1 {
-	background-color: dodgerblue;
+	background-color: #699c6d;
 	border-style: ridge;
 	border-width: 4px 4px 4px 4px;
 }
 
 .mytheme .dice-banner-2 {
-	background-color: lightcyan;
+	background-color: #11401b;
 	border-style: solid;
 	border-width: 4px 4px 4px 4px;
 }
@@ -58,11 +58,12 @@
 }
 
 .mytheme .view-background .v-touchkit-navbar {
-	background: aliceblue;
+	background: #3b8c31;
+	color: darkslategray;
 }
 
 .mytheme .view-background .v-touchkit-verticalcomponentgroup {
-	background: lightblue;
+	background: #1e3c23;
 }
 
 .mytheme .v-label.v-has-width {
@@ -70,20 +71,28 @@
 }
 
 .mytheme .v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button {
-	background: lightskyblue;
+	background: #d0d6b5;
+	color: #000000;
 }
 
 .mytheme .v-touchkit-tabbar-toolbar .v-touchkit-toolbar .v-button-selected {
-	background: darkblue;
+	background: #637704;
+	color: white;
 }
 
 .mytheme .v-touchkit-componentgroup-row:before {
-	border-top: 1px solid #ef2525;
+	border-top: 1px solid #d09062;
 }
 
 .mytheme .reset-button .v-button-wrap {
 	border-style: solid;
 	border-width: 2px 2px 2px 2px;
+	color: darkred;
+	background: black;
+	border-radius: 12px;
+	border-color: transparent;
+	width: 50%;
+	font-size: x-large;
 }
 
 .mytheme .dice-image-stats {
