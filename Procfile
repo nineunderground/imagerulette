@@ -1,1 +1,1 @@
-web:    java $JAVA_OPTS -cp target/classes:target/dependency/* org.inakirj.ImageRulette.MyUI
+web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT imagerulette/target/*.war
