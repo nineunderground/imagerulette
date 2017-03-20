@@ -99,7 +99,7 @@
 							<!-- 
 							 -->
 							<goal>compile-theme</goal>
-							
+							<goal>resources</goal>
 						</goals>
 					</execution>
 				</executions>
