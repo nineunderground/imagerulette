@@ -12,7 +12,7 @@ import com.vaadin.ui.CssLayout;
 public class Settings extends CssLayout {
 
     /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -2827095393080319901L;
+    private static final long serialVersionUID = -282709539308031990L;
 
     /**
      * Instantiates a new settings.
