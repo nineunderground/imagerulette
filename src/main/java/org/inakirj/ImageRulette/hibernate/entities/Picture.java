@@ -3,19 +3,32 @@
  */
 package org.inakirj.ImageRulette.hibernate.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author inaki
  *
  */
-public class Pictures {
+@Entity
+@Table(schema = "dice_rulette", name = "Picture")
+public class Picture {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "url")
     private String url;
 
     /**
      * Instantiates a new pictures.
      */
-    public Pictures() {
+    public Picture() {
     }
 
     public int getId() {

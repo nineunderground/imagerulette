@@ -121,12 +121,6 @@ public class MyUI extends UI {
     public static class MyUIServlet extends TouchKitServlet {
 	private static final long serialVersionUID = 1259803207649501173L;
 
-	// @Override
-	// public void init(ServletConfig servletConfig) throws ServletException
-	// {
-	// super.init(servletConfig);
-	// }
-
 	@Override
 	protected void servletInitialized() throws ServletException {
 	    super.servletInitialized();
@@ -135,7 +129,8 @@ public class MyUI extends UI {
 	    // App icon
 	    s.getApplicationIcons().addApplicationIcon(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
 	    // Splash screen
-	    s.getWebAppSettings().setStartupImage(contextPath + "VAADIN/themes/splash.png");
+	    // s.getWebAppSettings().setStartupImage(contextPath +
+	    // "VAADIN/themes/splash.png");
 	    // ViewPortSettings vp = s.getViewPortSettings();
 	    // vp.setViewPortUserScalable(true);
 	}
