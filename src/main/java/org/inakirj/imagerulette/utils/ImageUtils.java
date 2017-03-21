@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inakirj.ImageRulette.utils;
+package org.inakirj.imagerulette.utils;
 
 import java.io.File;
 

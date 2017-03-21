@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inakirj.ImageRulette.screens;
+package org.inakirj.imagerulette.screens;
 
 import com.vaadin.ui.CssLayout;
 

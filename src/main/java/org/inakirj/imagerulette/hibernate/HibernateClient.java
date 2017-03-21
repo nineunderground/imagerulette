@@ -1,4 +1,4 @@
-package org.inakirj.ImageRulette.hibernate;
+package org.inakirj.imagerulette.hibernate;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.inakirj.ImageRulette.hibernate.entities.Picture;
+import org.inakirj.imagerulette.hibernate.entities.Picture;
 
 /**
  * 

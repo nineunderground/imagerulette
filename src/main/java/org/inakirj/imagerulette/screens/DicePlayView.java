@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inakirj.ImageRulette.screens;
+package org.inakirj.imagerulette.screens;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.inakirj.ImageRulette.utils.ImageUtils;
+import org.inakirj.imagerulette.utils.ImageUtils;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;

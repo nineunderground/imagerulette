@@ -1,12 +1,12 @@
-package org.inakirj.ImageRulette;
+package org.inakirj.imagerulette;
 
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
-import org.inakirj.ImageRulette.screens.DicePlayView;
-import org.inakirj.ImageRulette.screens.DiceSetupView;
+import org.inakirj.imagerulette.screens.DicePlayView;
+import org.inakirj.imagerulette.screens.DiceSetupView;
 
 import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;

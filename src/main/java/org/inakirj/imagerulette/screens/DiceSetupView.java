@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.inakirj.ImageRulette.screens;
+package org.inakirj.imagerulette.screens;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import org.inakirj.ImageRulette.MyUI;
-import org.inakirj.ImageRulette.utils.ImageUtils;
+import org.inakirj.imagerulette.MyUI;
+import org.inakirj.imagerulette.utils.ImageUtils;
 
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;

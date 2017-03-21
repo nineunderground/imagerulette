@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inakirj.ImageRulette.hibernate.entities;
+package org.inakirj.imagerulette.hibernate.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
