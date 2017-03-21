@@ -24,7 +24,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -50,7 +49,6 @@ public class DicePlayView extends CssLayout {
     private HorizontalLayout imageLayout;
     public Table statsLayout;
     private VerticalLayout mainLayout;
-    private long initialImages;
 
     /**
      * Instantiates a new dice play.
@@ -67,7 +65,6 @@ public class DicePlayView extends CssLayout {
 	statsImageIdOcurrencesMap.clear();
 	this.lotteryList.stream()
 		.forEach(img -> statsImageIdOcurrencesMap.put(ImageUtils.getId((Image) img), new Integer(0)));
-	initialImages = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
     }
 
     /**
@@ -90,7 +87,7 @@ public class DicePlayView extends CssLayout {
 	imageLayout.setComponentAlignment(randomImgToBeReplaced, Alignment.TOP_CENTER);
 
 	Button rollBtn = new Button();
-	rollBtn.addClickListener(this::onPickABallClick);
+	rollBtn.addClickListener(e -> onPickABallClick());
 	rollBtn.setWidth(25, Unit.PERCENTAGE);
 	rollBtn.setHeight(50, Unit.PIXELS);
 	rollBtn.setIcon(FontAwesome.CUBE);
@@ -107,12 +104,11 @@ public class DicePlayView extends CssLayout {
     /**
      * Calculate stats.
      */
+    @SuppressWarnings("unchecked")
     private void calculateStats() {
 	long totalImagesRendered = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
-	// totalImagesRendered = totalImagesRendered - initialImages;
 	Map<Image, Double> statsRowsMap = new HashMap<Image, Double>();
 	Iterator<Entry<Integer, Integer>> iterator = statsImageIdOcurrencesMap.entrySet().iterator();
-	int rowCount = 0;
 	while (iterator.hasNext()) {
 	    // Left fake column
 	    Entry<Integer, Integer> entry = iterator.next();
@@ -120,7 +116,6 @@ public class DicePlayView extends CssLayout {
 	    img.addStyleName("dice-image-stats");
 	    double label = getCalculation(entry.getValue(), totalImagesRendered);
 	    statsRowsMap.put(img, label);
-	    rowCount++;
 	}
 	Table popupContent;
 	if (statsLayout == null) {
@@ -183,7 +178,7 @@ public class DicePlayView extends CssLayout {
     /**
      * Loop thread.
      */
-    private void onPickABallClick(ClickEvent e) {
+    private void onPickABallClick() {
 	int value = randomizer.nextInt(lotteryList.size());
 	Image img = ImageUtils.getImage((Image) lotteryList.get(value));
 	img.setWidth(78, Unit.PIXELS);

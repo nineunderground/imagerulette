@@ -25,12 +25,6 @@ public class Picture {
     @Column(name = "url")
     private String url;
 
-    /**
-     * Instantiates a new pictures.
-     */
-    public Picture() {
-    }
-
     public int getId() {
 	return id;
     }

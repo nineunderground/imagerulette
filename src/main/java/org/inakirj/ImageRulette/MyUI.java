@@ -22,7 +22,6 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 
@@ -48,7 +47,6 @@ public class MyUI extends UI {
     private List<Object> generateLotteryList;
     private NavigationView tabContent2;
     private NavigationView tabContent3;
-    private DicePlayView setupLayout;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -60,7 +58,7 @@ public class MyUI extends UI {
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
 	Button resetSliders = new Button("RESET");
-	resetSliders.addClickListener(this::onResetSliders);
+	resetSliders.addClickListener(e -> onResetSliders());
 	resetSliders.addStyleName("reset-button");
 	tabContent2.setRightComponent(resetSliders);
 
@@ -74,8 +72,7 @@ public class MyUI extends UI {
 	tabContent2.setData("2");
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
 	tabSetup.setIcon(FontAwesome.PICTURE_O);
-	setupLayout = new DicePlayView();
-	tabContent3.setContent(setupLayout);
+	tabContent3.setContent(new DicePlayView());
 	tabContent3.setData("3");
 	Tab tabPlay = tabManager.addTab(tabContent3, "DICE");
 	tabPlay.setIcon(FontAwesome.CUBES);
@@ -89,11 +86,7 @@ public class MyUI extends UI {
 	    @Override
 	    public void selectedTabChange(SelectedTabChangeEvent event) {
 		NavigationView tab = (NavigationView) (event.getTabSheet().getSelelectedTab()).getComponent();
-		if (tab.getData().equals("1")) {
-
-		} else if (tab.getData().equals("2")) {
-
-		} else if (tab.getData().equals("3") && tab.isEnabled()) {
+		if (tab.getData().equals("3") && tab.isEnabled()) {
 		    ((DicePlayView) tab.getContent()).setupLottery(generateLotteryList);
 		}
 	    }
@@ -107,7 +100,7 @@ public class MyUI extends UI {
      * @param e
      *            the e
      */
-    private void onResetSliders(ClickEvent event) {
+    private void onResetSliders() {
 	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
 	tabContent3.setEnabled(false);
 	tabContent2.setContent(new DiceSetupView(tabContent3));

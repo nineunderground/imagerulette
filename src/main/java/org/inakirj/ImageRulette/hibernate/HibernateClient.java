@@ -68,6 +68,7 @@ public class HibernateClient {
     /**
      * List picture.
      */
+    @SuppressWarnings("unchecked")
     private void listPicture() {
 	Transaction tx = null;
 	try {
