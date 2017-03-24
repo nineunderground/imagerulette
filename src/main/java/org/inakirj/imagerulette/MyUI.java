@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
+import org.inakirj.imagerulette.screens.DiceGalleryView;
 import org.inakirj.imagerulette.screens.DicePlayView;
 import org.inakirj.imagerulette.screens.DiceSetupView;
 
@@ -45,6 +46,7 @@ public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
     private List<Object> generateLotteryList;
+    public NavigationView tabContent1;
     private NavigationView tabContent2;
     private NavigationView tabContent3;
 
@@ -53,30 +55,42 @@ public class MyUI extends UI {
 	TabBarView tabManager = new TabBarView();
 	tabManager.addStyleName("tab-style");
 
-	// NavigationView tabContent1 = new NavigationView();
+	Button addImage = new Button();
+	addImage.setIcon(FontAwesome.PLUS);
+	addImage.addClickListener(e -> addImageRow());
+
+	tabContent1 = new NavigationView();
 	tabContent2 = new NavigationView();
+	tabContent3 = new NavigationView();
+
+	// Upload images tab
+	tabContent1.setCaption("Set image URLs");
+	tabContent1.setContent(new DiceGalleryView());
+	tabContent1.setData("1");
+	tabContent1.setRightComponent(addImage);
+	Tab tabUpload = tabManager.addTab(tabContent1, "UPLOAD");
+	tabUpload.setIcon(FontAwesome.ARCHIVE);
+
+	// Setup tab
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
 	Button resetSliders = new Button("RESET");
 	resetSliders.addClickListener(e -> onResetSliders());
 	resetSliders.addStyleName("reset-button");
 	tabContent2.setRightComponent(resetSliders);
-
-	tabContent3 = new NavigationView();
-	tabContent3.setCaption("Roll the dice");
-
-	// tabContent1.setContent(new DiceGalleryView());
-	// tabContent1.setData("1");
-	// tabManager.addTab(tabContent1, "GALLERY");
 	tabContent2.setContent(new DiceSetupView(tabContent3));
 	tabContent2.setData("2");
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
 	tabSetup.setIcon(FontAwesome.PICTURE_O);
+
+	// Dice tab
+	tabContent3.setCaption("Roll the dice");
 	tabContent3.setContent(new DicePlayView());
 	tabContent3.setData("3");
 	Tab tabPlay = tabManager.addTab(tabContent3, "DICE");
 	tabPlay.setIcon(FontAwesome.CUBES);
 	tabContent3.setEnabled(false);
+
 	tabManager.setSelectedTab(tabContent2);
 	tabManager.addListener(new SelectedTabChangeListener() {
 
@@ -92,6 +106,16 @@ public class MyUI extends UI {
 	    }
 	});
 	setContent(tabManager);
+    }
+
+    /**
+     * Adds the image row.
+     */
+    private void addImageRow() {
+	DiceGalleryView gallery = (DiceGalleryView) tabContent1.getContent();
+	gallery.addRow(null);
+	Button addButton = (Button) tabContent1.getRightComponent();
+	addButton.setEnabled(!gallery.hasReachLimitImages);
     }
 
     /**

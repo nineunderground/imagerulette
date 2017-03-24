@@ -4,7 +4,13 @@
 package org.inakirj.imagerulette.utils;
 
 import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.google.common.net.MediaType;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Image;
@@ -50,6 +56,55 @@ public final class ImageUtils {
      */
     public static int getId(Image img) {
 	return (int) img.getData();
+    }
+
+    /**
+     * Gets the image URL.
+     *
+     * @return the image URL
+     */
+    public static List<Image> getAllImageURL() {
+	List<Image> result = new ArrayList<>();
+	SettingsManager sm = new SettingsManager();
+	Image img;
+	for (String url : sm.getAllURLs()) {
+	    ExternalResource resource = new ExternalResource(url);
+	    img = new Image("", resource);
+	    result.add(img);
+	}
+	return result;
+    }
+
+    /**
+     * Gets the image URL.
+     *
+     * @param url
+     *            the url
+     * @return the image URL
+     */
+    public static Image getImageURL(String url) {
+	ExternalResource resource = new ExternalResource(url);
+	return new Image("", resource);
+    }
+
+    /**
+     * Validate HTTP URI.
+     *
+     * @param uri
+     *            the uri
+     * @return true, if successful
+     */
+    public static boolean isValidURI(String uri) {
+	HttpURLConnection con;
+	try {
+	    URL obj = new URL(uri);
+	    con = (HttpURLConnection) obj.openConnection();
+	    String contentType = con.getContentType();
+	    MediaType mt = MediaType.parse(contentType);
+	    return mt.is(MediaType.ANY_IMAGE_TYPE);
+	} catch (Exception e) {
+	    return false;
+	}
     }
 
 }
