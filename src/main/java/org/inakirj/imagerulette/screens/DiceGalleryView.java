@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import org.inakirj.imagerulette.MyUI;
 import org.inakirj.imagerulette.utils.ImageUtils;
-import org.inakirj.imagerulette.utils.SettingsManager;
+import org.inakirj.imagerulette.utils.CookieManager;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ExternalResource;
@@ -40,7 +40,7 @@ public class DiceGalleryView extends CssLayout {
      * Instantiates a new gallery.
      */
     public DiceGalleryView() {
-	SettingsManager cookieMng = new SettingsManager();
+	CookieManager cookieMng = new CookieManager();
 	setLayout(cookieMng.getAllURLs());
     }
 
@@ -119,8 +119,8 @@ public class DiceGalleryView extends CssLayout {
     private void deleteUrl(DiceItem itemToBeRemoved) {
 	newDataSource.removeItem(itemToBeRemoved);
 	String url = itemToBeRemoved.getUrl().getValue();
-	if (ImageUtils.isValidURI(url)) {
-	    SettingsManager cm = new SettingsManager();
+	if (ImageUtils.isValidImageURI(url)) {
+	    CookieManager cm = new CookieManager();
 	    cm.removeFromProperties(url);
 	}
 	refreshIDs();
@@ -159,14 +159,14 @@ public class DiceGalleryView extends CssLayout {
     private void validateUrl(DiceItem item) {
 	boolean isValid = false;
 	String urlInput = item.getUrl().getValue();
-	if (urlInput != null && ImageUtils.isValidURI(urlInput)) {
+	if (urlInput != null && ImageUtils.isValidImageURI(urlInput)) {
 	    Image imgRow = null;
 	    if (urlInput != null) {
 		ExternalResource resource = new ExternalResource(urlInput);
 		imgRow = new Image("", resource);
 		imgRow.addStyleName("dice-image");
 		isValid = true;
-		SettingsManager cm = new SettingsManager();
+		CookieManager cm = new CookieManager();
 		cm.saveAllURLs(newDataSource.getItemIds().stream().map(di -> di.getUrl().getValue())
 			.collect(Collectors.toList()));
 	    }

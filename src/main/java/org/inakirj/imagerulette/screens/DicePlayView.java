@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.inakirj.imagerulette.utils.ImageUtils;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.server.FileResource;
@@ -45,7 +43,10 @@ public class DicePlayView extends CssLayout {
     private Random randomizer = new Random(Calendar.getInstance().getTime().getTime());
     private List<Object> lotteryList;
     private Image randomImgToBeReplaced;
-    private Map<Integer, Integer> statsImageIdOcurrencesMap = new HashMap<>();
+    /**
+     * map -> (Image URL, occurrences)
+     */
+    private Map<String, Integer> statsImageIdOcurrencesMap = new HashMap<>();
     private HorizontalLayout imageLayout;
     public Table statsLayout;
     private VerticalLayout mainLayout;
@@ -64,7 +65,7 @@ public class DicePlayView extends CssLayout {
 	this.lotteryList = new ArrayList<Object>(lotteryListGenerated);
 	statsImageIdOcurrencesMap.clear();
 	this.lotteryList.stream()
-		.forEach(img -> statsImageIdOcurrencesMap.put(ImageUtils.getId((Image) img), new Integer(0)));
+		.forEach(img -> statsImageIdOcurrencesMap.put(String.valueOf(((Image) img).getData()), new Integer(0)));
     }
 
     /**
@@ -108,14 +109,20 @@ public class DicePlayView extends CssLayout {
     private void calculateStats() {
 	long totalImagesRendered = statsImageIdOcurrencesMap.values().stream().reduce(0, Integer::sum);
 	Map<Image, Double> statsRowsMap = new HashMap<Image, Double>();
-	Iterator<Entry<Integer, Integer>> iterator = statsImageIdOcurrencesMap.entrySet().iterator();
+	Iterator<Entry<String, Integer>> iterator = statsImageIdOcurrencesMap.entrySet().iterator();
 	while (iterator.hasNext()) {
 	    // Left fake column
-	    Entry<Integer, Integer> entry = iterator.next();
-	    Image img = ImageUtils.getImage(entry.getKey());
-	    img.addStyleName("dice-image-stats");
+	    Entry<String, Integer> entry = iterator.next();
+	    // @formatter:off
+	    Image img = lotteryList.stream()
+		    .map(i -> (Image) i)
+		    .filter(i -> entry.getKey().equals((i.getData())))
+		    .findFirst().orElse(null);
+	    // @formatter:on
+	    Image imgCopy = new Image("", img.getSource());
+	    imgCopy.addStyleName("dice-image-stats");
 	    double label = getCalculation(entry.getValue(), totalImagesRendered);
-	    statsRowsMap.put(img, label);
+	    statsRowsMap.put(imgCopy, label);
 	}
 	Table popupContent;
 	if (statsLayout == null) {
@@ -180,16 +187,16 @@ public class DicePlayView extends CssLayout {
      */
     private void onPickABallClick() {
 	int value = randomizer.nextInt(lotteryList.size());
-	Image img = ImageUtils.getImage((Image) lotteryList.get(value));
+	Image img = (Image) lotteryList.get(value);
 	img.setWidth(78, Unit.PIXELS);
 	img.setHeight(81, Unit.PIXELS);
 	img.addStyleName("random-image");
 	imageLayout.replaceComponent(randomImgToBeReplaced, img);
 	randomImgToBeReplaced = img;
-	int imgIdToIncrease = (int) randomImgToBeReplaced.getData();
-	Integer currentValue = statsImageIdOcurrencesMap.get(imgIdToIncrease);
+	String imgUrlToIncrease = (String) img.getData();
+	Integer currentValue = statsImageIdOcurrencesMap.get(imgUrlToIncrease);
 	currentValue++;
-	statsImageIdOcurrencesMap.put(imgIdToIncrease, new Integer(currentValue));
+	statsImageIdOcurrencesMap.put(imgUrlToIncrease, new Integer(currentValue));
 	calculateStats();
     }
 

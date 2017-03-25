@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import org.inakirj.imagerulette.screens.DiceGalleryView;
 import org.inakirj.imagerulette.screens.DicePlayView;
-import org.inakirj.imagerulette.screens.DiceSetupView;
+import org.inakirj.imagerulette.screens.DiceURLSetupView;
 
 import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
@@ -52,6 +52,7 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
 	TabBarView tabManager = new TabBarView();
 	tabManager.addStyleName("tab-style");
 
@@ -78,7 +79,7 @@ public class MyUI extends UI {
 	resetSliders.addClickListener(e -> onResetSliders());
 	resetSliders.addStyleName("reset-button");
 	tabContent2.setRightComponent(resetSliders);
-	tabContent2.setContent(new DiceSetupView(tabContent3));
+	tabContent2.setContent(new DiceURLSetupView(tabContent3));
 	tabContent2.setData("2");
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
 	tabSetup.setIcon(FontAwesome.PICTURE_O);
@@ -127,7 +128,7 @@ public class MyUI extends UI {
     private void onResetSliders() {
 	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
 	tabContent3.setEnabled(false);
-	tabContent2.setContent(new DiceSetupView(tabContent3));
+	tabContent2.setContent(new DiceURLSetupView(tabContent3));
     }
 
     /**
