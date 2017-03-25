@@ -70,19 +70,20 @@ public class MyUI extends UI {
 	tabContent1.setData("1");
 	tabContent1.setRightComponent(addImage);
 	Tab tabUpload = tabManager.addTab(tabContent1, "UPLOAD");
-	tabUpload.setIcon(FontAwesome.ARCHIVE);
+	tabUpload.setIcon(FontAwesome.LINK);
 
 	// Setup tab
 	tabContent2.setCaption("Create your dice pool");
 	tabContent2.addStyleName("view-background");
-	Button resetSliders = new Button("RESET");
+	Button resetSliders = new Button("");
 	resetSliders.addClickListener(e -> onResetSliders());
 	resetSliders.addStyleName("reset-button");
+	resetSliders.setIcon(FontAwesome.REPEAT);
 	tabContent2.setRightComponent(resetSliders);
 	tabContent2.setContent(new DiceURLSetupView(tabContent3));
 	tabContent2.setData("2");
 	Tab tabSetup = tabManager.addTab(tabContent2, "SETUP");
-	tabSetup.setIcon(FontAwesome.PICTURE_O);
+	tabSetup.setIcon(FontAwesome.COGS);
 
 	// Dice tab
 	tabContent3.setCaption("Roll the dice");

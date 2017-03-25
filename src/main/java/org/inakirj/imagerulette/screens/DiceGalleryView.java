@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.inakirj.imagerulette.MyUI;
 import org.inakirj.imagerulette.utils.CookieManager;
 import org.inakirj.imagerulette.utils.ImageUtils;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ExternalResource;
@@ -63,11 +64,12 @@ public class DiceGalleryView extends CssLayout {
 	urlTable.setContainerDataSource(newDataSource);
 	urlTable.setVisibleColumns("url", "img", "validateImg", "deleteImg");
 	urlTable.setColumnHeaders("PATH", "IMAGE", "SAVE", "DELETE");
-	urlTable.setColumnExpandRatio("url", 5);
+	urlTable.setColumnExpandRatio("url", 3);
 	urlTable.setColumnExpandRatio("img", 3);
-	urlTable.setColumnExpandRatio("validateImg", 1);
-	urlTable.setColumnExpandRatio("deleteImg", 1);
+	urlTable.setColumnExpandRatio("validateImg", 2);
+	urlTable.setColumnExpandRatio("deleteImg", 2);
 	urlTable.setWidth(100, Unit.PERCENTAGE);
+	urlTable.addStyleName("upload-table");
 	layout.addComponent(urlTable);
 	addComponent(layout);
     }
@@ -78,7 +80,7 @@ public class DiceGalleryView extends CssLayout {
     public void addRow(String urlEntry) {
 	DiceItem itemCreated = new DiceItem();
 	Button validateButton = new Button();
-	validateButton.setIcon(FontAwesome.ARROW_DOWN);
+	validateButton.setIcon(FontAwesome.CHECK_CIRCLE_O);
 	validateButton.addClickListener(e -> validateUrl(itemCreated));
 	itemCreated.setValidateImg(validateButton);
 	Image imgRow = null;
@@ -95,8 +97,10 @@ public class DiceGalleryView extends CssLayout {
 	imgRow.addStyleName("dice-image");
 	itemCreated.setImg(imgRow);
 	TextField textRow = new TextField();
+	textRow.addStyleName("url-style");
 	if (url != null) {
 	    textRow.setValue(url);
+	    validateButton.setIcon(FontAwesome.CHECK_CIRCLE);
 	}
 	itemCreated.setUrl(textRow);
 	if (urlEntry != null) {
@@ -105,7 +109,7 @@ public class DiceGalleryView extends CssLayout {
 	itemCreated.setValid(imgRow != null);
 
 	Button deleteButton = new Button();
-	deleteButton.setIcon(FontAwesome.REMOVE);
+	deleteButton.setIcon(FontAwesome.TRASH);
 	itemCreated.setDeleteImg(deleteButton);
 	deleteButton.addClickListener(e -> deleteUrl(itemCreated));
 
@@ -120,6 +124,21 @@ public class DiceGalleryView extends CssLayout {
      *            the url to be removed
      */
     private void deleteUrl(DiceItem itemToBeRemoved) {
+	ConfirmDialog.show(UI.getCurrent(), "Do you confirm?", dialog -> {
+	    if (dialog.isConfirmed()) {
+		deleteUrlAction(itemToBeRemoved);
+		dialog.close();
+	    }
+	});
+    }
+
+    /**
+     * Delete url action.
+     *
+     * @param itemToBeRemoved
+     *            the item to be removed
+     */
+    private void deleteUrlAction(DiceItem itemToBeRemoved) {
 	newDataSource.removeItem(itemToBeRemoved);
 	String url = itemToBeRemoved.getUrl().getValue();
 	if (ImageUtils.isValidImageURI(url)) {
