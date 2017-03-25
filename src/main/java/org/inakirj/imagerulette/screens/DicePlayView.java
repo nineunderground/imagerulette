@@ -145,6 +145,8 @@ public class DicePlayView extends CssLayout {
 	    popupContent.setWidth(100, Unit.PERCENTAGE);
 	    popupContent.addContainerProperty(imageCol, Image.class, null);
 	    popupContent.addContainerProperty(oddCol, BigDecimal.class, null);
+	    popupContent.setColumnExpandRatio(imageCol, 3);
+	    popupContent.setColumnExpandRatio(oddCol, 7);
 	} else {
 	    popupContent = statsLayout;
 	    popupContent.removeAllItems();

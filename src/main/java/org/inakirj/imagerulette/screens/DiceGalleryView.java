@@ -8,8 +8,8 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import org.inakirj.imagerulette.MyUI;
-import org.inakirj.imagerulette.utils.ImageUtils;
 import org.inakirj.imagerulette.utils.CookieManager;
+import org.inakirj.imagerulette.utils.ImageUtils;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ExternalResource;
@@ -99,6 +99,9 @@ public class DiceGalleryView extends CssLayout {
 	    textRow.setValue(url);
 	}
 	itemCreated.setUrl(textRow);
+	if (urlEntry != null) {
+	    itemCreated.getUrl().setEnabled(false);
+	}
 	itemCreated.setValid(imgRow != null);
 
 	Button deleteButton = new Button();
@@ -173,6 +176,9 @@ public class DiceGalleryView extends CssLayout {
 	    item.setImg(imgRow);
 	}
 	item.setValid(isValid);
+	if (isValid) {
+	    item.getUrl().setEnabled(false);
+	}
 	newDataSource.sort(propertyIds, ascendingIds);
     }
 
