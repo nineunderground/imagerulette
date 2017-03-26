@@ -3,7 +3,7 @@ ImageRulette
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5bdf00d73754cba8c5b071621bce964)](https://www.codacy.com/app/nineunderground/imagerulette?utm_source=github.com&utm_medium=referral&utm_content=nineunderground/imagerulette&utm_campaign=badger)
 
-You can try here https://mighty-ravine-21171.herokuapp.com
+[You can try here](https://mighty-ravine-21171.herokuapp.com)
 
 Simple Vaadin application that only requires a Servlet 3.0 container to run. It has Jetty server embedded into war file
 
