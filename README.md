@@ -17,7 +17,6 @@ All urls are stored in browser cache.
 Views
 -------------------------
 
-
 Upload images
 
 ![Upload logo](docs/screenshots/uploadImages.png "Upload")
