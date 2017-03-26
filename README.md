@@ -19,10 +19,10 @@ Views
 ![Upload logo](docs/screenshots/uploadImages.png "Upload")
 
 2. -> Setup images
-![Upload logo](docs/screenshots/uploadImages.png "Upload")
+![Upload logo](docs/screenshots/setupImages.png "Upload")
 
 3. -> Dice simulator
-![Upload logo](docs/screenshots/uploadImages.png "Upload")
+![Upload logo](docs/screenshots/diceSimulator.png "Upload")
 
 
 Running project
