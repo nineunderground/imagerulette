@@ -684,7 +684,6 @@ import org.inakirj.imagerulette.screens.DiceGallerySetupView;
 import org.inakirj.imagerulette.screens.DicePlayView;
 import org.inakirj.imagerulette.screens.DiceURLSetupView;
 
-import com.vaadin.addon.touchkit.annotations.OfflineModeEnabled;
 import com.vaadin.addon.touchkit.server.TouchKitServlet;
 import com.vaadin.addon.touchkit.settings.TouchKitSettings;
 import com.vaadin.addon.touchkit.ui.NavigationView;
@@ -716,7 +715,6 @@ import com.vaadin.ui.UI;
 @Theme("mytheme")
 @Widgetset("org.vaadin.touchkit.gwt.ImageRuletteWidgetSet")
 @Title("Dice Rulette")
-@OfflineModeEnabled
 public class MyUI extends UI {
 
     private static final long serialVersionUID = 7664729118286363293L;
@@ -797,9 +795,6 @@ public class MyUI extends UI {
 
     /**
      * On reset sliders.
-     *
-     * @param e
-     *            the e
      */
     private void onResetSliders() {
 	((DicePlayView) tabContent3.getContent()).statsLayout.removeAllItems();
@@ -811,7 +806,7 @@ public class MyUI extends UI {
      * The Class MyUIServlet.
      */
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
+    @VaadinServletConfiguration(ui = MyUI.class, productionMode = true, heartbeatInterval = -1)
     public static class MyUIServlet extends TouchKitServlet {
 	private static final long serialVersionUID = 1259803207649501173L;
 
@@ -823,10 +818,7 @@ public class MyUI extends UI {
 	    // App icon
 	    s.getApplicationIcons().addApplicationIcon(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
 	    // Splash screen
-	    // s.getWebAppSettings().setStartupImage(contextPath +
-	    // "VAADIN/themes/splash.png");
-	    // ViewPortSettings vp = s.getViewPortSettings();
-	    // vp.setViewPortUserScalable(true);
+	    s.getWebAppSettings().setStartupImage(contextPath + "VAADIN/themes/mytheme/dicerulette.png");
 	}
     }
 
