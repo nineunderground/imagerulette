@@ -18,15 +18,15 @@ Views
 -------------------------
 
 
-1. -> Upload images
+Upload images
 
 ![Upload logo](docs/screenshots/uploadImages.png "Upload")
 
-2. -> Setup images
+Setup images
 
 ![Setup logo](docs/screenshots/setupImages.png "Setup")
 
-3. -> Dice simulator
+Dice simulator
 
 ![Simulator logo](docs/screenshots/diceSimulator.png "Simulator")
 
