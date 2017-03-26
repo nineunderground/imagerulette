@@ -146,6 +146,10 @@
 	vertical-align: middle;
 }
 
+.mytheme .upload-table .v-table-cell-content .v-table-cell-wrapper {
+	text-align: center !important;
+}
+
 .mytheme .upload-table .v-button-wrap {
 	font-size: 30px;
 }

@@ -673,70 +673,71 @@ the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 */
-package org.inakirj.imagerulette.utils;
+package org.inakirj.imagerulette.beans;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.net.MediaType;
-import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.TextField;
 
 /**
  * @author inaki
  *
  */
-public final class ImageUtils {
+public class DiceItem {
 
-    /**
-     * Gets the image URL.
-     *
-     * @return the image URL
-     */
-    public static List<Image> getAllImageURL() {
-	List<Image> result = new ArrayList<>();
-	CookieManager sm = new CookieManager();
-	Image img;
-	for (String url : sm.getAllURLs()) {
-	    ExternalResource resource = new ExternalResource(url);
-	    img = new Image("", resource);
-	    img.setData(url);
-	    result.add(img);
-	}
-	return result;
+    private long id;
+    private TextField url;
+    private Image img;
+    private Button validateImg;
+    private Button deleteImg;
+    private boolean isValid;
+
+    public long getId() {
+	return id;
     }
 
-    /**
-     * Gets the image URL.
-     *
-     * @param id
-     *            the id
-     * @return the image URL
-     */
-    public static Image getImageURL(String url) {
-	return getAllImageURL().stream().filter(i -> ((String) i.getData()) == url).findFirst().orElse(null);
+    public void setId(long id) {
+	this.id = id;
     }
 
-    /**
-     * Validate HTTP URI.
-     *
-     * @param uri
-     *            the URI
-     * @return true, if given URI is an static image
-     */
-    public static boolean isValidImageURI(String uri) {
-	HttpURLConnection con;
-	try {
-	    URL obj = new URL(uri);
-	    con = (HttpURLConnection) obj.openConnection();
-	    String contentType = con.getContentType();
-	    MediaType mt = MediaType.parse(contentType);
-	    return mt.is(MediaType.ANY_IMAGE_TYPE);
-	} catch (Exception e) {
-	    return false;
-	}
+    public TextField getUrl() {
+	return url;
+    }
+
+    public void setUrl(TextField url) {
+	this.url = url;
+    }
+
+    public Image getImg() {
+	return img;
+    }
+
+    public void setImg(Image img) {
+	this.img = img;
+    }
+
+    public Button getValidateImg() {
+	return validateImg;
+    }
+
+    public void setValidateImg(Button validateImg) {
+	this.validateImg = validateImg;
+    }
+
+    public Button getDeleteImg() {
+	return deleteImg;
+    }
+
+    public void setDeleteImg(Button deleteImg) {
+	this.deleteImg = deleteImg;
+    }
+
+    public boolean isValid() {
+	return isValid;
+    }
+
+    public void setValid(boolean isValid) {
+	this.isValid = isValid;
     }
 
 }

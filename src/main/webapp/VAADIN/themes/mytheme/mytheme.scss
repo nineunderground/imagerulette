@@ -197,12 +197,16 @@
 	.upload-table{
 		.v-table-cell-content{
 			padding: 0px 3px 0px 3px;
-			vertical-align: middle;	
+			vertical-align: middle;
+			.v-table-cell-wrapper{
+				text-align: center !important;
+			}
 		}
 	
 		.v-button-wrap{
 			font-size: 30px;
 		}
+	
 	}
 	
 }

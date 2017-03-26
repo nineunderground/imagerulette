@@ -673,70 +673,207 @@ the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 */
-package org.inakirj.imagerulette.utils;
+package org.inakirj.imagerulette.screens;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
-import com.google.common.net.MediaType;
+import org.inakirj.imagerulette.MyUI;
+import org.inakirj.imagerulette.beans.DiceItem;
+import org.inakirj.imagerulette.utils.CookieManager;
+import org.inakirj.imagerulette.utils.ImageUtils;
+import org.vaadin.dialogs.ConfirmDialog;
+
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * @author inaki
  *
  */
-public final class ImageUtils {
+@SuppressWarnings("serial")
+public class DiceGallerySetupView extends CssLayout {
+
+    private static final int TOTAL_URL_LIMIT = 30;
+    private BeanItemContainer<DiceItem> newDataSource = new BeanItemContainer<>(DiceItem.class);;
+    private final Object[] propertyIds = { "id" };
+    private final boolean[] ascendingIds = { true };
+    public boolean hasReachLimitImages = newDataSource.size() == TOTAL_URL_LIMIT;
 
     /**
-     * Gets the image URL.
-     *
-     * @return the image URL
+     * Instantiates a new gallery.
      */
-    public static List<Image> getAllImageURL() {
-	List<Image> result = new ArrayList<>();
-	CookieManager sm = new CookieManager();
-	Image img;
-	for (String url : sm.getAllURLs()) {
+    public DiceGallerySetupView() {
+	CookieManager cookieMng = new CookieManager();
+	setLayout(cookieMng.getAllURLs());
+    }
+
+    /**
+     * Sets the layout.
+     *
+     * @param urlList
+     *            the new layout
+     */
+    private void setLayout(List<String> urlList) {
+	removeAllComponents();
+	VerticalLayout layout = new VerticalLayout();
+	layout.setWidth(100, Unit.PERCENTAGE);
+	// Table
+	Table urlTable = new Table();
+	for (String url : urlList) {
+	    addRow(url);
+	}
+	newDataSource.sort(propertyIds, ascendingIds);
+	urlTable.setContainerDataSource(newDataSource);
+	urlTable.setVisibleColumns("url", "img", "validateImg", "deleteImg");
+	urlTable.setColumnHeaders("PATH", "IMAGE", "SAVE", "DELETE");
+	urlTable.setColumnExpandRatio("url", 3);
+	urlTable.setColumnExpandRatio("img", 3);
+	urlTable.setColumnExpandRatio("validateImg", 2);
+	urlTable.setColumnExpandRatio("deleteImg", 2);
+
+	urlTable.setWidth(100, Unit.PERCENTAGE);
+	urlTable.addStyleName("upload-table");
+	// urlTable.setPageLength(urlList.size());
+	layout.addComponent(urlTable);
+	addComponent(layout);
+    }
+
+    /**
+     * Adds the row.
+     */
+    public void addRow(String urlEntry) {
+	DiceItem itemCreated = new DiceItem();
+	Button validateButton = new Button();
+	validateButton.setIcon(FontAwesome.CHECK_CIRCLE_O);
+	validateButton.addClickListener(e -> validateUrl(itemCreated));
+	itemCreated.setValidateImg(validateButton);
+	Image imgRow = null;
+	String url = null;
+	if (urlEntry != null) {
+	    StringTokenizer urlEntryTokenizer = new StringTokenizer(urlEntry, " ");
+	    url = urlEntryTokenizer.nextToken();
 	    ExternalResource resource = new ExternalResource(url);
-	    img = new Image("", resource);
-	    img.setData(url);
-	    result.add(img);
+	    imgRow = new Image("", resource);
+	    itemCreated.setId(getNextId());
+	} else {
+	    imgRow = new Image("", null);
 	}
-	return result;
+	imgRow.addStyleName("dice-image");
+	imgRow.addStyleName("dice-align-center");
+	itemCreated.setImg(imgRow);
+	TextField textRow = new TextField();
+	textRow.addStyleName("url-style");
+	if (url != null) {
+	    textRow.setValue(url);
+	    validateButton.setIcon(FontAwesome.CHECK_CIRCLE);
+	}
+	itemCreated.setUrl(textRow);
+	if (urlEntry != null) {
+	    itemCreated.getUrl().setEnabled(false);
+	}
+	itemCreated.setValid(imgRow != null);
+
+	Button deleteButton = new Button();
+	deleteButton.setIcon(FontAwesome.TRASH);
+	itemCreated.setDeleteImg(deleteButton);
+	deleteButton.addClickListener(e -> deleteUrl(itemCreated));
+
+	newDataSource.addBean(itemCreated);
+	hasReachLimitImages = newDataSource.size() == TOTAL_URL_LIMIT;
     }
 
     /**
-     * Gets the image URL.
+     * Delete url.
      *
-     * @param id
-     *            the id
-     * @return the image URL
+     * @param itemCreated
+     *            the url to be removed
      */
-    public static Image getImageURL(String url) {
-	return getAllImageURL().stream().filter(i -> ((String) i.getData()) == url).findFirst().orElse(null);
+    private void deleteUrl(DiceItem itemToBeRemoved) {
+	ConfirmDialog.show(UI.getCurrent(), "Do you confirm?", dialog -> {
+	    if (dialog.isConfirmed()) {
+		deleteUrlAction(itemToBeRemoved);
+		dialog.close();
+	    }
+	});
     }
 
     /**
-     * Validate HTTP URI.
+     * Delete url action.
      *
-     * @param uri
-     *            the URI
-     * @return true, if given URI is an static image
+     * @param itemToBeRemoved
+     *            the item to be removed
      */
-    public static boolean isValidImageURI(String uri) {
-	HttpURLConnection con;
-	try {
-	    URL obj = new URL(uri);
-	    con = (HttpURLConnection) obj.openConnection();
-	    String contentType = con.getContentType();
-	    MediaType mt = MediaType.parse(contentType);
-	    return mt.is(MediaType.ANY_IMAGE_TYPE);
-	} catch (Exception e) {
-	    return false;
+    private void deleteUrlAction(DiceItem itemToBeRemoved) {
+	newDataSource.removeItem(itemToBeRemoved);
+	String url = itemToBeRemoved.getUrl().getValue();
+	if (ImageUtils.isValidImageURI(url)) {
+	    CookieManager cm = new CookieManager();
+	    cm.removeFromProperties(url);
 	}
+	refreshIDs();
+	if (hasReachLimitImages) {
+	    MyUI ui = (MyUI) UI.getCurrent();
+	    Button addButton = (Button) ui.tabContent1.getRightComponent();
+	    addButton.setEnabled(true);
+	}
+    }
+
+    /**
+     * Gets the next id.
+     *
+     * @return the next id
+     */
+    private long getNextId() {
+	return newDataSource.size();
+    }
+
+    /**
+     * Refresh IDs.
+     */
+    private void refreshIDs() {
+	long id = 0;
+	for (DiceItem item : newDataSource.getItemIds()) {
+	    item.setId(id++);
+	}
+    }
+
+    /**
+     * Validate url.
+     *
+     * @param itemCreated
+     *            the item created
+     */
+    private void validateUrl(DiceItem item) {
+	boolean isValid = false;
+	String urlInput = item.getUrl().getValue();
+	if (urlInput != null && ImageUtils.isValidImageURI(urlInput)) {
+	    Image imgRow = null;
+	    if (urlInput != null) {
+		ExternalResource resource = new ExternalResource(urlInput);
+		imgRow = new Image("", resource);
+		imgRow.addStyleName("dice-image");
+		isValid = true;
+		CookieManager cm = new CookieManager();
+		cm.saveAllURLs(newDataSource.getItemIds().stream().map(di -> di.getUrl().getValue())
+			.collect(Collectors.toList()));
+	    }
+	    item.setImg(imgRow);
+	}
+	item.setValid(isValid);
+	if (isValid) {
+	    item.getUrl().setEnabled(false);
+	}
+	newDataSource.sort(propertyIds, ascendingIds);
     }
 
 }
