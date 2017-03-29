@@ -1,7 +1,7 @@
 ImageRulette
 ==============
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5bdf00d73754cba8c5b071621bce964)](https://www.codacy.com/app/nineunderground/imagerulette?utm_source=github.com&utm_medium=referral&utm_content=nineunderground/imagerulette&utm_campaign=badger) [![Build Status](https://travis-ci.org/nineunderground/imagerulette.svg?branch=master)](https://travis-ci.org/nineunderground/imagerulette)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5bdf00d73754cba8c5b071621bce964)](https://www.codacy.com/app/nineunderground/imagerulette?utm_source=github.com&utm_medium=referral&utm_content=nineunderground/imagerulette&utm_campaign=badger) [![Build Status](https://travis-ci.org/nineunderground/imagerulette.svg?branch=master)](https://travis-ci.org/nineunderground/imagerulette) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 [You can try here](https://mighty-ravine-21171.herokuapp.com)
 
